@@ -37,6 +37,8 @@ To extract the part of the map that is of interest, TopoMap makes use either of 
 
 Natural Earth Data provides one such source of shape files for countries. Different versions of these (varying by how borders are defined) can be downloaded [here](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/)
 
+They can also be downloaded per country from the GADM [here](https://gadm.org/download_country.html), but these files are MUCH larger. 
+
 A custom polygon can also be used using the '--mask country' option. Simply provide a custom shape file. 
 
 

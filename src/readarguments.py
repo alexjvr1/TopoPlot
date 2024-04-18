@@ -3,54 +3,65 @@
 # import dependencies
 import argparse
 from pathlib import Path
+import sys
 
 
-# Read arguments supplied in the command line
-def get_args() -> argparse.Namespace:
-    """Get arguments
+# Add the path to the root of the project to sys.path
+path_root = Path(__file__).parents[1]
+sys.path.append(str(path_root))
 
-    Returns
-    -------
-    args : argparse.Namespace
-        Argument values
-    """
-    description = "Plot sample locations on a topographic map"
-    parser = argparse.ArgumentParser(description=description, add_help=False)
 
-    parser.add_argument(
-        "-r",
-        "--raster_indir",
-        required=True,
-        type=Path,
-        help="Directory containing raster files to create the map (*.tif)",
-        metavar="RASTER",
-    )
-    parser.add_argument(
-        "-i",
-        "--indir",
-        required=True,
-        type=Path,
-        help="Directory containing sample information in tab delimited file (*.yaml|*.txt)",
-        metavar="DATA",
-    )
-    default_mode = "figures"
-    parser.add_argument(
-        "-o",
-        "--outdir",
-        required=True,
-        type=Path,
-        help="Output directory where final figures will be saved",
-        metavar="OUTDIR",
-    )
-    default_mode = "fastani"
-    parser.add_argument(
-        "-m",
-        "--mode",
-        type=str,
-        help="ANI calculation mode ('fastani'[default]|'skani')",
-        default=default_mode,
-        choices=["fastani", "skani"],
-        metavar="",
-    )
-    args = parser.parse_args()
-    return args
+# All functions related to importing the topographic map
+class ReadArguments:
+    def __init__(self):
+        self = self
+
+    # Read arguments supplied in the command line
+    def get_args(self) -> argparse.Namespace:
+        """Get arguments
+
+        Returns
+        -------
+        args : argparse.Namespace
+            Argument values
+        """
+        description = "Plot sample locations on a topographic map"
+        parser = argparse.ArgumentParser(description=description, add_help=False)
+        parser.add_argument(
+            "-i",
+            "--indir",
+            required=True,
+            type=Path,
+            help="Directory containing raster files to create the map (*.tif), \
+            (optional) a shape file to mask the map (*.shp), and the sample information \
+            in a tab delimited file (*.yaml|*.txt).",
+            metavar="INDIR",
+        )
+        default_mode = "./figures"
+        parser.add_argument(
+            "-o",
+            "--outdir",
+            type=Path,
+            default=default_mode,
+            help='Output directory where final figures will be saved. Default: "./figures"',
+            metavar="OUTDIR",
+        )
+        parser.add_argument(
+            "-m",
+            "--mask",
+            type=str,
+            required=True,
+            help="Choose the method to determine the final map shape ('country'|'coords')",
+            choices=["country", "coords"],
+            metavar="MASK",
+        )
+        parser.add_argument(
+            "-c",
+            "--country",
+            type=str,
+            required=True,
+            help="Name of the country shape to be used. Required if --mask country is chosen.",
+            metavar="COUNTRY",
+        )
+        args = parser.parse_args()
+        return args
