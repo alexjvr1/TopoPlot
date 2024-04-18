@@ -3,6 +3,7 @@
 
 # import all dependencies
 import rasterio
+import rasterio.mask
 from rasterio.merge import merge
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -18,10 +19,10 @@ class ImportMap:
         self = self
 
     # Read elevation datasets into Python and return as object
-    def import_and_merge_raster_file(self, path_to_raster):
+    def import_and_merge_raster_file(self, path_to_raster, outdir):
         path = Path(path_to_raster)
         # Create an output folder for the mosaic raster
-        Path("output").mkdir(parents=True, exist_ok=True)
+        Path(outdir).mkdir(parents=True, exist_ok=True)
         output_path = "output/mosaic_output.tif"
         # Read in all the rasters
         raster_files = list(path.glob("*.tif"))
@@ -59,7 +60,8 @@ class ImportMap:
         country = country
         raster = raster
         path_to_shp = str(Path.joinpath(path, "*shp"))
-        shape_file = glob.glob(path_to_shp)
+        path_to_shp = glob.glob(path_to_shp)
+        shape_file = path_to_shp[0]
         df = gpd.read_file(shape_file)
         country = df.loc[df["ADMIN"] == country]
         clipped_array, clipped_transform = rasterio.mask.mask(
@@ -67,7 +69,7 @@ class ImportMap:
         )
         plt.imshow(clipped_array[0], cmap="Spectral")
         plt.savefig(output_path + ".png")
-        return
+        return clipped_array
 
     # Mask map according to user defined shape
     def mask_map_by_coords(self, lat, long):
