@@ -23,7 +23,7 @@ class ImportMap:
         Path("output").mkdir(parents=True, exist_ok=True)
         output_path = "output/mosaic_output.tif"
         # Read in all the rasters
-        raster_files = list(path.iterdir())
+        raster_files = list(path.glob("*.tif"))
         raster_to_mosiac = []
         # loop through files and create a list of raster files to merge
         for p in raster_files:
@@ -52,21 +52,19 @@ class ImportMap:
 
     # Mask map according to country shape
     def mask_map_by_country(self, country):
-        country = country
+        path = args.indir
+        country = args.country
+        shape_file = list(path.glob("*.shp"))
+        df = gpd.read_file(shape_file)
+        country = df.loc[df["ADMIN"] == country]
+        clipped_array, clipped_transform = rasterio.mask.mask(
+            file, [mapping(country.iloc[0].geometry)], crop=True
+        )
+        plt.imshow(clipped_array[0], cmap="Spectral")
+        plt.savefig(output_path + ".png")
+        return
 
-
-df = gpd.read_file("NaturalEarth/data/10m_cultural/ne_10m_admin_0_countries.shp")
-
-italy = df.loc[df["ADMIN"] == "Italy"]
-
-clipped_array, clipped_transform = msk.mask(
-    file, [mapping(italy.iloc[0].geometry)], crop=True
-)
-
-plt.imshow(clipped_array[0], cmap="Spectral")
-plt.show()
-
-
-# Mask map according to user defined shape
-
-# Mask map according to user defined shape
+    # Mask map according to user defined shape
+    def mask_map_by_country(self, lat, long):
+        lat = lat
+        long = long
