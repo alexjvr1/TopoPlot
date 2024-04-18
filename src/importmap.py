@@ -6,6 +6,9 @@ import rasterio
 from rasterio.merge import merge
 import matplotlib.pyplot as plt
 from pathlib import Path
+import geopandas as gpd
+from shapely.geometry import mapping
+from rasterio import mask
 
 
 # All functions related to importing the topographic map
@@ -47,8 +50,21 @@ class ImportMap:
         # return the mosaic as an object
         return mosaic
 
+    # Mask map according to country shape
+    def mask_map_by_country(self, country):
+        country = country
 
-# Mask map according to country shape
+
+df = gpd.read_file("NaturalEarth/data/10m_cultural/ne_10m_admin_0_countries.shp")
+
+italy = df.loc[df["ADMIN"] == "Italy"]
+
+clipped_array, clipped_transform = msk.mask(
+    file, [mapping(italy.iloc[0].geometry)], crop=True
+)
+
+plt.imshow(clipped_array[0], cmap="Spectral")
+plt.show()
 
 
 # Mask map according to user defined shape
