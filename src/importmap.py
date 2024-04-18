@@ -53,14 +53,17 @@ class ImportMap:
         return mosaic
 
     # Mask map according to country shape
-    def mask_map_by_country(self, indir, country):
+    def mask_map_by_country(self, indir, country, raster, outdir):
         path = indir
+        output_path = outdir
         country = country
-        shape_file = glob.glob(path + "/*.shp")
+        raster = raster
+        path_to_shp = str(Path.joinpath(path, "*shp"))
+        shape_file = glob.glob(path_to_shp)
         df = gpd.read_file(shape_file)
         country = df.loc[df["ADMIN"] == country]
         clipped_array, clipped_transform = rasterio.mask.mask(
-            file, [mapping(country.iloc[0].geometry)], crop=True
+            raster, [mapping(country.iloc[0].geometry)], crop=True
         )
         plt.imshow(clipped_array[0], cmap="Spectral")
         plt.savefig(output_path + ".png")
