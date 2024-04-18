@@ -9,6 +9,7 @@ from pathlib import Path
 import geopandas as gpd
 from shapely.geometry import mapping
 from rasterio import mask
+import glob
 
 
 # All functions related to importing the topographic map
@@ -24,6 +25,7 @@ class ImportMap:
         output_path = "output/mosaic_output.tif"
         # Read in all the rasters
         raster_files = list(path.glob("*.tif"))
+        print(raster_files)
         raster_to_mosiac = []
         # loop through files and create a list of raster files to merge
         for p in raster_files:
@@ -51,10 +53,10 @@ class ImportMap:
         return mosaic
 
     # Mask map according to country shape
-    def mask_map_by_country(self, country):
-        path = args.indir
-        country = args.country
-        shape_file = list(path.glob("*.shp"))
+    def mask_map_by_country(self, indir, country):
+        path = indir
+        country = country
+        shape_file = glob.glob(path + "/*.shp")
         df = gpd.read_file(shape_file)
         country = df.loc[df["ADMIN"] == country]
         clipped_array, clipped_transform = rasterio.mask.mask(
@@ -65,6 +67,6 @@ class ImportMap:
         return
 
     # Mask map according to user defined shape
-    def mask_map_by_country(self, lat, long):
+    def mask_map_by_coords(self, lat, long):
         lat = lat
         long = long
