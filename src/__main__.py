@@ -38,14 +38,14 @@ mosaic = ImportMap.import_and_merge_raster_file(path_to_raster)
 # If --country option is selected:
 if args.mask == "country":
     # Use function to produce a country mask
-    ImportMap.mask_map_by_country(args.indir, args.country)
+    ImportMap.mask_map_by_country(args.indir, args.country, mosaic, args.outdir)
     # Else coordinates are selected
 elif args.mask == "coords":
     print("Coordinates chosen")
-    # ImportMap.mask_map_by_coords(args.coords)
-    # Use function to use coordinates to create mask
-    # Save figure (.png)
-    # Return mask variable
+# ImportMap.mask_map_by_coords(args.coords)
+# Use function to use coordinates to create mask
+# Save figure (.png)
+# Return mask variable
 
 
 # main()
