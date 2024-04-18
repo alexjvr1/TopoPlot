@@ -1,4 +1,4 @@
-##GeoPlot##
+##TopoPlot##
 
 
 # Define variables
@@ -23,7 +23,9 @@ def main():
     args = ReadArguments.getargs()
     # Import raster file and return the 'mosaic' variable of all the tiles stitched together
     # Save mosaic.tif, and save a plot (.png) of the mosaic map to the output folder
+    # Options: raster dir, outdir
     mosaic = ImportMap.import_and_merge_raster_file(path_to_raster)
+
     # Create a mask to delimit the map (ImportMap)
     # If --country option is selected:
     # Use function to produce a country mask
