@@ -1,32 +1,49 @@
 ##GeoPlot##
 
-# Import dependencies
-import argparse
-from pathlib import Path
-import sys
-
-
-# Add the path to the root of the project to sys.path
-path_root = Path(__file__).parents[1]
-sys.path.append(str(path_root))
 
 # Define variables
 path_to_raster = "example/"
 
 # Import modules and initiate instances of each class
+# from readarguments import ReadArguments
 from importmap import ImportMap
 
+# from colourmap import ColourMap
+# from samplestomap import SamplesToMap
 
+# ReadArguments = ReadArguments()
 ImportMap = ImportMap()
+# ColourMap = ColourMap()
+# SamplesToMap = SamplesToMap()
 
 
-# Import raster file and create mosaic
-mosaic = ImportMap.import_and_merge_raster_file(path_to_raster)
+# TopoMap main function for entry point
+def main():
+    # Import all arguments
+    args = ReadArguments.getargs()
+    # Import raster file and return the 'mosaic' variable of all the tiles stitched together
+    # Save mosaic.tif, and save a plot (.png) of the mosaic map to the output folder
+    mosaic = ImportMap.import_and_merge_raster_file(path_to_raster)
+    # Create a mask to delimit the map (ImportMap)
+    # If --country option is selected:
+    # Use function to produce a country mask
+    # Elif coordinates are selected
+    # Use function to use coordinates to create mask
+    # Save figure (.png)
+    # Return mask variable
+
+    # Function to readjust the scale (ColourMap)
+
+    # Function to colour the map using different colour palettes (default grey scale)
+    # ColourMap
+
+    # Import samples and plot
+    # SamplesToMap
+    # Variables: colour, size, shape, population (for legend)
+    # Default: black, small, circles, one population
+    # Print figure (default .png), optional pdf
 
 
-##Plot samples on topographic maps
-
-
-# def execute_main():
-#   if __name__ == "__main__":  # Condition to ensure module is executed not imported.
-#       execute_main()
+def execute_main():
+    if __name__ == "__main__":
+        execute_main()
