@@ -19,7 +19,7 @@ ImportMap = ImportMap()
 
 # TopoMap main function for entry point
 def main():
-    # Import all arguments
+    # Import all arguments. Now we can call the arguments as args.argument
     args = ReadArguments.getargs()
     # Import raster file and return the 'mosaic' variable of all the tiles stitched together
     # Save mosaic.tif, and save a plot (.png) of the mosaic map to the output folder
@@ -28,9 +28,13 @@ def main():
 
     # Create a mask to delimit the map (ImportMap)
     # If --country option is selected:
-    # Use function to produce a country mask
-    # Elif coordinates are selected
-    # Use function to use coordinates to create mask
+    if args.mask == 'country': 
+        # Use function to produce a country mask
+        ImportMap.mask_map_by_country(args.mask)
+    # Else coordinates are selected
+    else args.mask == 'coords':
+        ImportMap.mask_map_by_coords(args.coords)
+        # Use function to use coordinates to create mask
     # Save figure (.png)
     # Return mask variable
 
