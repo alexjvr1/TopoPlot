@@ -10,7 +10,7 @@ from pathlib import Path
 import geopandas as gpd
 from shapely.geometry import mapping
 import glob
-import fiona
+import numpy as np
 
 
 # All functions related to importing the topographic map
@@ -62,8 +62,35 @@ class ImportMap:
         # return the mosaic as an object
         return mosaic
 
+    # Helper function to clip raster using a polygon, and to assign the nodata
+    # cells to the max(polygon) value + 1 so that there is no natural gap in
+    # the value range.
+    def clip_raster(self, path_to_mosaic, polygon):
+        with rasterio.open(path_to_mosaic) as raster:
+            out_image, out_transform = rasterio.mask.mask(
+                raster, [mapping(polygon.iloc[0].geometry)], crop=True
+            )
+            out_image, out_transform = rasterio.mask.mask(
+                raster,
+                [mapping(polygon.iloc[0].geometry)],
+                crop=True,
+                nodata=(np.amax(out_image[0]) + 1),
+            )
+            out_meta = raster.meta
+            out_meta.update(
+                {
+                    "driver": "GTiff",
+                    "height": out_image.shape[1],
+                    "width": out_image.shape[2],
+                    "transform": out_transform,
+                }
+            )
+            out_image[0] = out_image[0] + abs(np.amin(out_image))
+            value_range = np.amax(out_image) + abs(np.amin(out_image))
+            return out_image, value_range, out_meta
+
     # Mask map according to country shape
-    # outdir is the directory where the input raster is saved after merge \
+    # outdir is the directory where the input raster is saved after merge
     # by import_and_merge_raster_file
     # This is also the directory where the masked output map will
     # be saved
@@ -72,17 +99,19 @@ class ImportMap:
         output_path = outdir
         country = country
         shape_file = self.find_file_in_posixpath(path, "*shp")
-        df = gpd.read_file(shape_file)
-        country = df.loc[df["ADMIN"] == country]
+        shapefile = gpd.read_file(shape_file)
+        country = shapefile.loc[shapefile["ADMIN"] == country]
         path_to_mosaic = self.find_file_in_posixpath(output_path, "*tif")
-        #
-        with rasterio.open(path_to_mosaic) as raster:
-            clipped_array, clipped_transform = rasterio.mask.mask(
-                raster, [mapping(country.iloc[0].geometry)], crop=True
-            )
-        plt.imshow(clipped_array[0], cmap="Spectral")
-        plt.savefig(Path.joinpath(output_path, ".png"))
-        return clipped_array
+        # Helper function to clip the raster
+        out_image, value_range, out_meta = self.clip_raster(
+            path_to_mosaic, polygon=country
+        )
+        output_path = str(str(outdir) + "/mosaic.masked.tif")
+        with rasterio.open(output_path, "w", **out_meta) as dest:
+            dest.write(out_image)
+        plt.imshow(out_image[0], cmap="Spectral")
+        plt.savefig(output_path + ".png")
+        return out_image, value_range
 
     # Mask map according to user defined shape
     def mask_map_by_coords(self, lat, long):
