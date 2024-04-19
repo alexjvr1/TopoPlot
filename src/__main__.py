@@ -31,14 +31,18 @@ outdir.mkdir(exist_ok=True)
 # Import raster file and return the 'mosaic' variable of all the tiles stitched together
 # Save mosaic.tif, and save a plot (.png) of the mosaic map to the output folder
 # Options: raster dir, outdir
-path_to_raster = args.indir
-mosaic = ImportMap.import_and_merge_raster_file(path_to_raster)
+
+mosaic = ImportMap.import_and_merge_raster_file(
+    path_to_raster=args.indir, outdir=args.outdir
+)
 
 # Create a mask to delimit the map (ImportMap)
 # If --country option is selected:
 if args.mask == "country":
     # Use function to produce a country mask
-    ImportMap.mask_map_by_country(args.indir, args.country, mosaic, args.outdir)
+    ImportMap.mask_map_by_country(
+        indir=args.indir, country=args.country, outdir=args.outdir
+    )
     # Else coordinates are selected
 elif args.mask == "coords":
     print("Coordinates chosen")
