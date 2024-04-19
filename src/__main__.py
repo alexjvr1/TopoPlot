@@ -27,29 +27,34 @@ if args.mask == "country" and args.country is None:
 # def main():
 # make the outdir if needed
 outdir = args.outdir
+print("Creating", outdir, "if it does not exist.")
 outdir.mkdir(exist_ok=True)
 # Import raster file and return the 'mosaic' variable of all the tiles stitched together
 # Save mosaic.tif, and save a plot (.png) of the mosaic map to the output folder
 # Options: raster dir, outdir
 
+print("Import raster files to merge")
 mosaic = ImportMap.import_and_merge_raster_file(
     path_to_raster=args.indir, outdir=args.outdir
 )
+print("Merged raster file (*.tif) and figure (*.png) saved to", outdir)
 
 # Create a mask to crop the map and show only the region of interest (ImportMap)
 # If --country option is selected:
 if args.mask == "country":
-    # Use function to produce a country mask
-    ImportMap.mask_map_by_country(
+    # Use function to clip map by country mask. Return the masked image and a
+    # value range for the elevation assigned to each cell in the map
+    print("Clipping raster with mask for", args.country)
+    out_img, value_range = ImportMap.mask_map_by_country(
         indir=args.indir, country=args.country, outdir=args.outdir
     )
+    print("Clipped raster (*.tif) and figure (*.png) saved to", outdir)
     # Else coordinates are selected
 elif args.mask == "coords":
     print("Coordinates chosen")
 # ImportMap.mask_map_by_coords(args.coords)
 # Use function to use coordinates to create mask
 # Save figure (.png)
-# Return masked map and value_range
 
 # Choose a colour scale for the map (default greyscale)
 
