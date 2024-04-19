@@ -4,13 +4,13 @@
 # Import modules and initiate instances of each class
 from readarguments import ReadArguments
 from importmap import ImportMap
+from colourmap import ColourMap
 
-# from colourmap import ColourMap
 # from samplestomap import SamplesToMap
 
 ReadArguments = ReadArguments()
 ImportMap = ImportMap()
-# ColourMap = ColourMap()
+ColourMap = ColourMap()
 # SamplesToMap = SamplesToMap()
 
 # Import all arguments.
@@ -36,7 +36,7 @@ mosaic = ImportMap.import_and_merge_raster_file(
     path_to_raster=args.indir, outdir=args.outdir
 )
 
-# Create a mask to delimit the map (ImportMap)
+# Create a mask to crop the map and show only the region of interest (ImportMap)
 # If --country option is selected:
 if args.mask == "country":
     # Use function to produce a country mask
@@ -49,7 +49,9 @@ elif args.mask == "coords":
 # ImportMap.mask_map_by_coords(args.coords)
 # Use function to use coordinates to create mask
 # Save figure (.png)
-# Return mask variable
+# Return masked map and value_range
+
+# Choose a colour scale for the map (default greyscale)
 
 
 # main()
