@@ -57,7 +57,10 @@ if args.mask == "country" and bool(args.coordinates) == True:
     # And clip using bounding box specified by coordinates
     coords = ImportMap.read_coordinates(args.coordinates)
     # Write bounding box polygon to shapefile
-    polygon = ImportMap.bbox(coords=coords, outdir=args.outdir)
+    polygon = ImportMap.bbox(coords=coords)
+    #write polygon to shape file in outdir
+    ImportMap.write_bbox_to_shp(polygon=polygon, outdir=args.outdir)
+    #Mask map with the polygon
     out_img, value_range = ImportMap.mask_map_by_coords(map=, polygon=)
     print(
         "Clipped",
