@@ -39,6 +39,7 @@ mosaic = ImportMap.import_and_merge_raster_file(
 )
 print("Merged raster file (*.tif) and figure (*.png) saved to", outdir)
 
+# Option 1 (--country + --coordinates):
 # Create a mask to crop the map and show only the region of interest (ImportMap)
 # If --country option is selected:
 if args.mask == "country" and bool(args.coordinates) == True:
@@ -54,33 +55,57 @@ if args.mask == "country" and bool(args.coordinates) == True:
         indir=args.indir, country=args.country, outdir=args.outdir
     )
     print("Clipped", args.country, "raster (*.tif) and figure (*.png) saved to", outdir)
-    # And clip using bounding box specified by coordinates
-    coords = ImportMap.read_coordinates(args.coordinates)
     # Write bounding box polygon to shapefile
-    polygon = ImportMap.bbox(coords=coords)
-    #write polygon to shape file in outdir
+    polygon = ImportMap.bbox(coords=args.coordinates)
+    # write polygon to shape file in outdir
     ImportMap.write_bbox_to_shp(polygon=polygon, outdir=args.outdir)
-    #Mask map with the polygon
-    out_img, value_range = ImportMap.mask_map_by_coords(map=, polygon=)
+    # Mask map with the polygon
+    ##Find the masked map
+    path_to_map = ImportMap.find_file_in_posixpath(args.outdir, "*masked.tif")
+    out_img, value_range = ImportMap.mask_map_by_polygon(
+        map=path_to_map, path_to_polygon=args.outdir, outdir=args.outdir
+    )
     print(
         "Clipped",
         args.country,
         "raster (*.tif) using the bounding box",
         args.coordinates,
     )
-# Else plot only the country
+# Option2 (--country):
+# Else plot a map of the country without further clipping
 elif args.mask == "country" and bool(args.coordinates) == False:
     print("Clipping raster with mask for", args.country)
     out_img, value_range = ImportMap.mask_map_by_country(
         indir=args.indir, country=args.country, outdir=args.outdir
     )
-    print("Clipped", args.country, "raster (*.tif) and figure (*.png) saved to", outdir)
+    print(
+        "Clipped",
+        args.country,
+        "raster (*.tif) and figure (*.png) saved to",
+        args.outdir,
+    )
+# Option 3 (--coordinates):
 # Else mask the map using the bounding box created by the coordinates only.
-elif args.mask == "coords":
-    print("Coordinates chosen")
-# ImportMap.mask_map_by_coords(args.coords)
-# Use function to use coordinates to create mask
-# Save figure (.png)
+elif args.mask == "coords" and bool(args.country) == False:
+    print("Clip map by coordinates")
+
+# Create polygon from coordinates
+polygon = ImportMap.bbox(coords=args.coordinates)
+# write polygon to shape file in outdir
+ImportMap.write_bbox_to_shp(polygon=polygon, outdir=args.outdir)
+
+##Find the mosaic map
+path_to_map = ImportMap.find_file_in_posixpath(output_path, "*.tif")
+
+# Mask map with the polygon
+out_img, value_range = ImportMap.mask_map_by_polygon(
+    map=path_to_map, path_to_polygon=args.outdir, outdir=args.outdir
+)
+print(
+    "Clipped raster (*.tif) using the bounding box",
+    args.coordinates,
+)
+
 
 # Choose a colour scale for the map (default greyscale)
 
