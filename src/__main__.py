@@ -39,6 +39,9 @@ mosaic = ImportMap.import_and_merge_raster_file(
 )
 print("Merged raster file (*.tif) and figure (*.png) saved to", outdir)
 
+if bool(args.coords) == True:
+    print(args.coords)
+
 # Create a mask to crop the map and show only the region of interest (ImportMap)
 # If --country option is selected:
 if args.mask == "country":
