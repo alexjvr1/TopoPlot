@@ -13,6 +13,8 @@ from shapely.geometry import mapping
 import glob
 import numpy as np
 import shapefile as shp
+import pandas as pd
+import fiona
 
 
 # All functions related to importing the topographic map
@@ -122,16 +124,25 @@ class ImportMap:
         min_long = coords_tuple[1]
         max_lat = coords_tuple[2]
         max_long = coords_tuple[3]
-        return Polygon([[min_long, min_lat], [max_long, min_lat], [max_long, max_lat], [min_long, max_lat]])
-        
-     # Function to write polygon to shapefile
-     def write_bbox_to_shp(self, polygon, outdir):   
-        outdir = str(outdir + '/polygon.shp')
-        gpd.GeoDataFrame(pd.DataFrame(['p1'], columns = ['geom']),
-            crs = {'init':'epsg:4326'},
-            geometry = [polygon].to_file(outdir))
-    
-    #Mask map by polygon created by coordinates provided by user input  
+        return Polygon(
+            [
+                [min_long, min_lat],
+                [max_long, min_lat],
+                [max_long, max_lat],
+                [min_long, max_lat],
+            ]
+        )
+
+    # Function to write polygon to shapefile
+    def write_bbox_to_shp(self, polygon, outdir):
+        outdir = str(outdir) + "/polygon.shp"
+        gpd.GeoDataFrame(
+            pd.DataFrame(["p1"], columns=["geom"]),
+            crs={"init": "epsg:4326"},
+            geometry=[polygon],
+        ).to_file(outdir)
+
+    # Mask map by polygon created by coordinates provided by user input
     def mask_map_by_polygon(self, indir, polygon, outdir):
         path = indir
         output_path = outdir
