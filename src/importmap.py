@@ -132,7 +132,7 @@ class ImportMap:
             geometry = [polygon].to_file(outdir))
     
     #Mask map by polygon created by coordinates provided by user input  
-    def mask_map_by_country(self, indir, polygon, outdir):
+    def mask_map_by_polygon(self, indir, polygon, outdir):
         path = indir
         output_path = outdir
         shapefile = polygon
