@@ -8,9 +8,11 @@ from rasterio.merge import merge
 import matplotlib.pyplot as plt
 from pathlib import Path
 import geopandas as gpd
+from shapely.geometry import Polygon
 from shapely.geometry import mapping
 import glob
 import numpy as np
+import pyshp
 
 
 # All functions related to importing the topographic map
@@ -113,7 +115,23 @@ class ImportMap:
         plt.savefig(output_path + ".png")
         return out_image, value_range
 
+    # Helper function to create a bounding box based on coordinates and write a shapefile
+    def bbox(self, coords, outdir):
+        coords_tuple = tuple(np.array(coords).ravel())
+        lat0 = coords_tuple[0]
+        long0 = coords_tuple[1]
+        lat1 = coords_tuple[2]
+        long1 = coords_tuple[3]
+        #polygon = Polygon([[lat0, long0], [lat1, long0], [long1, lat1], [long0, lat1]])
+        bbox = shapefile.Writer(shapefile.POLYGON)
+        bbox.poly(parts=[[[lat0, long0], [lat1, long0], [long1, lat1], [long0, lat1]]]) 
+        bbox.field('FIRST_FLD','C','40') 
+        bbox.field('SECOND_FLD','C','40') 
+        bbox.record('First','Polygon') 
+        outdir = str(outdir + 'polygon.shp')
+        bbox.save(outdir)
+        return polygon
+
     # Mask map according to user defined shape
-    def mask_map_by_coords(self, lat, long):
-        lat = lat
-        long = long
+    def mask_map_by_coords(self, map, polygon):
+        

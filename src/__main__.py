@@ -55,13 +55,16 @@ if args.mask == "country" and bool(args.coordinates) == True:
     )
     print("Clipped", args.country, "raster (*.tif) and figure (*.png) saved to", outdir)
     # And clip using bounding box specified by coordinates
+    coords = ImportMap.read_coordinates(args.coordinates)
+    # Write bounding box polygon to shapefile
+    polygon = ImportMap.bbox(coords=coords, outdir=args.outdir)
+    out_img, value_range = ImportMap.mask_map_by_coords(map=, polygon=)
     print(
         "Clipped",
         args.country,
         "raster (*.tif) using the bounding box",
         args.coordinates,
     )
-    # out_img, value_range = ImportMap.mask_map_by_coords()
 # Else plot only the country
 elif args.mask == "country" and bool(args.coordinates) == False:
     print("Clipping raster with mask for", args.country)
