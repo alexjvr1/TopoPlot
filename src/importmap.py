@@ -12,7 +12,7 @@ from shapely.geometry import Polygon
 from shapely.geometry import mapping
 import glob
 import numpy as np
-import pyshp
+import shapefile as shp
 
 
 # All functions related to importing the topographic map
@@ -115,23 +115,38 @@ class ImportMap:
         plt.savefig(output_path + ".png")
         return out_image, value_range
 
-    # Helper function to create a bounding box based on coordinates and write a shapefile
-    def bbox(self, coords, outdir):
+    # Helper function to create a bounding box based on coordinates
+    def bbox(self, coords):
         coords_tuple = tuple(np.array(coords).ravel())
-        lat0 = coords_tuple[0]
-        long0 = coords_tuple[1]
-        lat1 = coords_tuple[2]
-        long1 = coords_tuple[3]
-        #polygon = Polygon([[lat0, long0], [lat1, long0], [long1, lat1], [long0, lat1]])
-        bbox = shapefile.Writer(shapefile.POLYGON)
-        bbox.poly(parts=[[[lat0, long0], [lat1, long0], [long1, lat1], [long0, lat1]]]) 
-        bbox.field('FIRST_FLD','C','40') 
-        bbox.field('SECOND_FLD','C','40') 
-        bbox.record('First','Polygon') 
-        outdir = str(outdir + 'polygon.shp')
-        bbox.save(outdir)
-        return polygon
-
-    # Mask map according to user defined shape
-    def mask_map_by_coords(self, map, polygon):
+        min_lat = coords_tuple[0]
+        min_long = coords_tuple[1]
+        max_lat = coords_tuple[2]
+        max_long = coords_tuple[3]
+        return Polygon([[min_long, min_lat], [max_long, min_lat], [max_long, max_lat], [min_long, max_lat]])
         
+     # Function to write polygon to shapefile
+     def write_bbox_to_shp(self, polygon, outdir):   
+        outdir = str(outdir + '/polygon.shp')
+        gpd.GeoDataFrame(pd.DataFrame(['p1'], columns = ['geom']),
+            crs = {'init':'epsg:4326'},
+            geometry = [polygon].to_file(outdir))
+    
+    #Mask map by polygon created by coordinates provided by user input  
+    def mask_map_by_country(self, indir, polygon, outdir):
+        path = indir
+        output_path = outdir
+        shapefile = polygon
+        shape_file = self.find_file_in_posixpath(path, "*shp")
+        shapefile = gpd.read_file(shape_file)
+        country = shapefile.loc[shapefile["ADMIN"] == country]
+        path_to_mosaic = self.find_file_in_posixpath(output_path, "*tif")
+        # Helper function to clip the raster
+        out_image, value_range, out_meta = self.clip_raster(
+            path_to_mosaic, polygon=country
+        )
+        output_path = str(str(outdir) + "/mosaic.masked.tif")
+        with rasterio.open(output_path, "w", **out_meta) as dest:
+            dest.write(out_image)
+        plt.imshow(out_image[0], cmap="Spectral")
+        plt.savefig(output_path + ".png")
+        return out_image, value_range
