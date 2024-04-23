@@ -143,7 +143,11 @@ else:
 
 # Plot colour map using a custom colour gradient
 ColourMap.map_in_colour(
-    colourgrad=args.colourmap, value_range=value_range, clipped_array=out_img
+    colourgrad=args.colourmap,
+    value_range=value_range,
+    clipped_array=out_img,
+    azimuth=args.azimuth,
+    altitude=args.altitude,
 )
 # Function to readjust the scale (ColourMap)
 # Function to colour the map using different colour palettes (default grey scale)
