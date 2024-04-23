@@ -29,19 +29,23 @@ if args.mask == "country" and args.country is None:
 outdir = args.outdir
 print("Creating", outdir, "if it does not exist.")
 outdir.mkdir(exist_ok=True)
+
+
+################################################################
+# Part 1a: Create a mosaic raster using the input raster files #
+################################################################
 # Import raster file and return the 'mosaic' variable of all the tiles stitched together
 # Save mosaic.tif, and save a plot (.png) of the mosaic map to the output folder
-# Options: raster dir, outdir
-
 print("Import raster files to merge")
 mosaic = ImportMap.import_and_merge_raster_file(
     path_to_raster=args.indir, outdir=args.outdir
 )
 print("Merged raster file (*.tif) and figure (*.png) saved to", outdir)
 
-// FIXME - When coordinates are used by themselves, the valuerange is not adjusted correctly. The background colour still shows up the same as the lowest elevation
 
-// FIXME - When country mask is chosen they are not centered in the map. I think this is just because of the mosaic. It clips away everything except that country. So not much we can do about that. 
+####################################################################
+# Part 1b: Mask the mosaic raster using country and/or coordinates #
+####################################################################
 
 # Option 1 (--country + --coordinates):
 # Create a mask to crop the map and show only the region of interest (ImportMap)
@@ -59,10 +63,17 @@ if args.mask == "country" and bool(args.coordinates) == True:
         indir=args.indir, country=args.country, outdir=args.outdir
     )
     print("Clipped", args.country, "raster (*.tif) and figure (*.png) saved to", outdir)
+    # The line `print("value range:", value_range)` is printing out the value range of the elevation
+    # assigned to each cell in the map after it has been clipped or masked. This information can be
+    # useful for understanding the range of elevation values present in the specific region of
+    # interest that is being displayed on the map.
+
     # Write bounding box polygon to shapefile
     polygon = ImportMap.bbox(coords=args.coordinates)
+
     # write polygon to shape file in outdir
     ImportMap.write_bbox_to_shp(polygon=polygon, outdir=args.outdir)
+
     # Mask map with the polygon
     ##Find the masked map
     path_to_map = ImportMap.find_file_in_posixpath(args.outdir, "*masked.tif")
@@ -75,6 +86,7 @@ if args.mask == "country" and bool(args.coordinates) == True:
         "raster (*.tif) using the bounding box",
         args.coordinates,
     )
+
 # Option2 (--country):
 # Else plot a map of the country without further clipping
 elif args.mask == "country" and bool(args.coordinates) == False:
@@ -88,6 +100,7 @@ elif args.mask == "country" and bool(args.coordinates) == False:
         "raster (*.tif) and figure (*.png) saved to",
         args.outdir,
     )
+
 # Option 3 (--coordinates):
 # Else mask the map using the bounding box created by the coordinates only.
 elif args.mask == "coords" and bool(args.country) == False:
@@ -101,6 +114,12 @@ elif args.mask == "coords" and bool(args.country) == False:
     ##Find the mosaic map
     path_to_map = ImportMap.find_file_in_posixpath(args.outdir, "mosaic_output.tif")
 
+    # Set pixel values of 0 to 'nodata' so that sea level pixels have a big colour contrast with the land data.
+    output_file = ImportMap.find_file_in_posixpath(args.outdir, "mosaic_output.tif")
+    ImportMap.fix_no_data_value(
+        path_to_map, output_file, no_data_value=args.no_data_value
+    )
+
     # Mask map with the polygon
     out_img, value_range = ImportMap.mask_map_by_polygon(
         path_to_map=path_to_map, path_to_polygon=args.outdir, outdir=args.outdir
@@ -109,11 +128,18 @@ elif args.mask == "coords" and bool(args.country) == False:
         "Clipped raster (*.tif) using the bounding box",
         args.coordinates,
     )
+    print("value range:", value_range)
+
+# If neither coordinates or country name are provided:
 else:
     print(
         "Cannot create a mask for the map. \
         --coordinates and/or --country are required arguments"
     )
+
+##########################
+# Part 2: Colour the map #
+##########################
 
 # Choose a colour scale for the map (default greyscale)
 
@@ -124,6 +150,11 @@ else:
 
 # Function to colour the map using different colour palettes (default grey scale)
 # ColourMap
+
+
+#################################
+# Part 3: Plot sample locations #
+#################################
 
 # Import samples and plot
 # SamplesToMap
