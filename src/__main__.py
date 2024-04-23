@@ -128,7 +128,7 @@ elif args.mask == "coords" and bool(args.country) == False:
         "Clipped raster (*.tif) using the bounding box",
         args.coordinates,
     )
-    print("value range:", value_range)
+
 
 # If neither coordinates or country name are provided:
 else:
@@ -141,14 +141,15 @@ else:
 # Part 2: Colour the map #
 ##########################
 
-# Choose a colour scale for the map (default greyscale)
-
-
-# main()
-
+# Plot colour map using a custom colour gradient
+ColourMap.map_in_colour(
+    colourgrad=args.colourmap, value_range=value_range, clipped_array=out_img
+)
 # Function to readjust the scale (ColourMap)
-
 # Function to colour the map using different colour palettes (default grey scale)
+
+# Lightsource: azimuth, hillshade, elevation
+
 # ColourMap
 
 
