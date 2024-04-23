@@ -143,19 +143,14 @@ class ImportMap:
         ).to_file(outdir)
 
     # Mask map by polygon created by coordinates provided by user input
-    def mask_map_by_polygon(self, indir, polygon, outdir):
-        path = indir
-        output_path = outdir
-        shapefile = polygon
-        shape_file = self.find_file_in_posixpath(path, "*shp")
+    def mask_map_by_polygon(self, path_to_map, path_to_polygon, outdir):
+        shape_file = self.find_file_in_posixpath(path_to_polygon, "*shp")
         shapefile = gpd.read_file(shape_file)
-        country = shapefile.loc[shapefile["ADMIN"] == country]
-        path_to_mosaic = self.find_file_in_posixpath(output_path, "*tif")
         # Helper function to clip the raster
         out_image, value_range, out_meta = self.clip_raster(
-            path_to_mosaic, polygon=country
+            path_to_map, polygon=shapefile
         )
-        output_path = str(str(outdir) + "/mosaic.masked.tif")
+        output_path = str(str(outdir) + "/FINAL.clipped.tif")
         with rasterio.open(output_path, "w", **out_meta) as dest:
             dest.write(out_image)
         plt.imshow(out_image[0], cmap="Spectral")

@@ -18,15 +18,15 @@ class ReadArguments:
 
     # Helper function to define coordinate type
     def coords_split(self, s):
-        seps = r"[ ;.]"
+        seps = r"[ ]"
         try:
             situp = []
             for si in re.split(seps, s):
-                situp.append(tuple(map(int, si.split(","))))
+                situp.append(tuple(map(float, si.split(","))))
             return situp
         except:
             raise argparse.ArgumentTypeError(
-                "Coordinates must be given divided by commas and space, dot, or semicolon e.g.: 'x,y k,l,m'"
+                "Coordinates must be given divided by commas and space, dot, or semicolon e.g.: 'x,y k,l'"
             )
 
     # Read arguments supplied in the command line
@@ -81,12 +81,11 @@ class ReadArguments:
             "--coordinates",
             required=False,
             type=self.coords_split,
-            # dest="cord",
-            help="Geographic coordinates in decimal degrees of a bounding box to be used to \
+            help="Geographic coordinates (WGS84) in decimal degrees of a bounding box to be used to \
                 select the desired part of the map. Coordinates should be provided as a set \
-                    for the lower left corner, and a set for the upper right corner of the box \
-                        ('latitude0', 'longitude0', 'latitude1', 'longitude1').",
-            # metavar="[0 - 180]",
+                for the lower left corner, and a set for the upper right corner of the box \
+                separated by a space. \
+                Like: ('minimum latitude','minimum longitude' 'max latitude','minimum longitude') | ('0,0 45,45').",
         )
         default_mode = float(3.5)
         parser.add_argument(
