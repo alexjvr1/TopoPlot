@@ -87,15 +87,28 @@ class ReadArguments:
                 separated by a space. \
                 Like: ('minimum latitude','minimum longitude' 'max latitude','minimum longitude') | ('0,0 45,45').",
         )
-        default_mode = float(3.5)
+        default_mode = int(0)
         parser.add_argument(
-            "-colour",
-            "--colour-scale",
-            type=float,
+            "-nd",
+            "--no_data_value",
+            type=int,
             default=default_mode,
-            help="TO BE COMPLETED",
-            nargs=2,
-            metavar=("TO BE COMPETED"),
+            help="Raster pixel values to be set to 'nodata'. Default is int(0) that corresponds to sea level pixels.",
+            nargs=1,
+            metavar=(range(0 - 255)),
+        )
+        default_mode = "gray"
+        parser.add_argument(
+            "-cm",
+            "--colourmap",
+            type=str,
+            default=default_mode,
+            help="A colour gradient selected from Matplotlib's colourmaps. \
+                Found here: https://matplotlib.org/stable/users/explain/colors/colormaps.html \
+                The name of the colour gradient should be provided like: 'viridis' \
+                Default: 'gray'",
+            nargs=1,
+            metavar=("COLOURMAP"),
         )
         default_mode = (7, 3.5)
         parser.add_argument(
