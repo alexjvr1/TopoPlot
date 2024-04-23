@@ -12,9 +12,8 @@ from shapely.geometry import Polygon
 from shapely.geometry import mapping
 import glob
 import numpy as np
-import shapefile as shp
+import shapefile
 import pandas as pd
-import fiona
 
 
 # All functions related to importing the topographic map
@@ -65,6 +64,19 @@ class ImportMap:
         plt.savefig(output_path + ".png")
         # return the mosaic as an object
         return mosaic
+
+    # Helper function to set raster pixel values == 0 to nodata.
+    # We do this to set the sea level cells to nodata so that we can
+    # generate a big contrast between the country and the ocean.
+    # r+ option means the meta values are updated in place
+    def fix_no_data_value(self, input_file, output_file, no_data_value=0):
+        with rasterio.open(input_file, "r+") as src:
+            src.nodata = no_data_value
+            with rasterio.open(output_file, "w", **src.profile) as dst:
+                for i in range(1, src.count + 1):
+                    band = src.read(i)
+                    band = np.where(band == no_data_value, no_data_value, band)
+                dst.write(band, i)
 
     # Helper function to clip raster using a polygon, and to assign the nodata
     # cells to the max(polygon) value + 1 so that there is no natural gap in
