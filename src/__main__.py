@@ -63,7 +63,7 @@ if args.mask == "country" and bool(args.coordinates) == True:
     ##Find the masked map
     path_to_map = ImportMap.find_file_in_posixpath(args.outdir, "*masked.tif")
     out_img, value_range = ImportMap.mask_map_by_polygon(
-        map=path_to_map, path_to_polygon=args.outdir, outdir=args.outdir
+        path_to_map=path_to_map, path_to_polygon=args.outdir, outdir=args.outdir
     )
     print(
         "Clipped",
@@ -89,23 +89,27 @@ elif args.mask == "country" and bool(args.coordinates) == False:
 elif args.mask == "coords" and bool(args.country) == False:
     print("Clip map by coordinates")
 
-# Create polygon from coordinates
-polygon = ImportMap.bbox(coords=args.coordinates)
-# write polygon to shape file in outdir
-ImportMap.write_bbox_to_shp(polygon=polygon, outdir=args.outdir)
+    # Create polygon from coordinates
+    polygon = ImportMap.bbox(coords=args.coordinates)
+    # write polygon to shape file in outdir
+    ImportMap.write_bbox_to_shp(polygon=polygon, outdir=args.outdir)
 
-##Find the mosaic map
-path_to_map = ImportMap.find_file_in_posixpath(output_path, "*.tif")
+    ##Find the mosaic map
+    path_to_map = ImportMap.find_file_in_posixpath(args.outdir, "*.tif")
 
-# Mask map with the polygon
-out_img, value_range = ImportMap.mask_map_by_polygon(
-    map=path_to_map, path_to_polygon=args.outdir, outdir=args.outdir
-)
-print(
-    "Clipped raster (*.tif) using the bounding box",
-    args.coordinates,
-)
-
+    # Mask map with the polygon
+    out_img, value_range = ImportMap.mask_map_by_polygon(
+        path_to_map=path_to_map, path_to_polygon=args.outdir, outdir=args.outdir
+    )
+    print(
+        "Clipped raster (*.tif) using the bounding box",
+        args.coordinates,
+    )
+else:
+    print(
+        "Cannot create a mask for the map. \
+        --coordinates and/or --country are required arguments"
+    )
 
 # Choose a colour scale for the map (default greyscale)
 
