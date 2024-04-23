@@ -97,7 +97,7 @@ class ReadArguments:
             nargs=1,
             metavar=(range(0 - 255)),
         )
-        default_mode = "gray"
+        default_mode = "viridis"
         parser.add_argument(
             "-cm",
             "--colourmap",
