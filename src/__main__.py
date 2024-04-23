@@ -39,6 +39,10 @@ mosaic = ImportMap.import_and_merge_raster_file(
 )
 print("Merged raster file (*.tif) and figure (*.png) saved to", outdir)
 
+// FIXME - When coordinates are used by themselves, the valuerange is not adjusted correctly. The background colour still shows up the same as the lowest elevation
+
+// FIXME - When country mask is chosen they are not centered in the map. I think this is just because of the mosaic. It clips away everything except that country. So not much we can do about that. 
+
 # Option 1 (--country + --coordinates):
 # Create a mask to crop the map and show only the region of interest (ImportMap)
 # If --country option is selected:
@@ -95,7 +99,7 @@ elif args.mask == "coords" and bool(args.country) == False:
     ImportMap.write_bbox_to_shp(polygon=polygon, outdir=args.outdir)
 
     ##Find the mosaic map
-    path_to_map = ImportMap.find_file_in_posixpath(args.outdir, "*.tif")
+    path_to_map = ImportMap.find_file_in_posixpath(args.outdir, "mosaic_output.tif")
 
     # Mask map with the polygon
     out_img, value_range = ImportMap.mask_map_by_polygon(
