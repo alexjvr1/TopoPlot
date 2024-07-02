@@ -141,21 +141,20 @@ else:
 # Part 2: Colour the map #
 ##########################
 
-# Plot colour map using a custom colour gradient
+# Create a colour map using a custom colour gradient and write to file
+
 ColourMap.map_in_colour(
     colourgrad=args.colourmap,
     value_range=value_range,
     clipped_array=out_img,
     azimuth=args.azimuth,
     altitude=args.altitude,
+    fig_height=args.figureheight,
+    fig_width=args.figurewidth,
+    outdir=args.outdir,
+    input=args.indir,
+    samples=args.sample_file,
 )
-# Function to readjust the scale (ColourMap)
-# Function to colour the map using different colour palettes (default grey scale)
-
-# Lightsource: azimuth, hillshade, elevation
-
-# ColourMap
-
 
 #################################
 # Part 3: Plot sample locations #
