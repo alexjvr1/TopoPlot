@@ -18,7 +18,7 @@ class ColourMap:
     def __init__(self):
         self = self
 
-    # representing the range in elevation values for our map
+    # Create a map with a colour gradient representing the range in elevation values for our map
     def map_in_colour(
         self,
         colourgrad,
@@ -29,8 +29,6 @@ class ColourMap:
         fig_height,
         fig_width,
         outdir,
-        input,
-        samples,
     ):
         # Rescale the colourgradient to the value_range
         colourgrad = mpl.colormaps[str(colourgrad)].resampled(value_range)
@@ -53,8 +51,26 @@ class ColourMap:
         output_path = str(str(outdir) + "/colourmap")
         plt.savefig(output_path + ".png")
         plt.savefig(output_path + ".pdf")
-        pickle.dump(ax, open("myplot.pickle", "w"))
-        # Read in sample information
+        pickle.dump(ax, open("myplot.pickle", "wb"))
+
+    # Read in sample and location information
+    def read_sample_info(self, sample_indir, sample_data):
+        # Read data from a tab delimited file
+        path_to_data = str(str(sample_indir) + "/" + sample_data)
+        data = np.genfromtxt(path_to_data, delimiter="\t")
+        print(data)
+        return data
+
+    # Plot sample locations on the colour map
+    def map_samples(
+        self, input, samples, marker_size, marker_colour, marker_style, alpha
+    ):
+        # Load map from pickled colour map saved with map_in_colour()
+        fig_handle = pickle.load(open("myplot.pickle", "rb"))
+        fig_handle.pyplot.scatter()
+        ax.scatter()
+        ax.set_xlabel("Latitude")
+        ax.set_ylabel("Longitude")
         # sample_df = pd.read_table((str(input) + "/" + samples))
         # Lat =
         # Long =

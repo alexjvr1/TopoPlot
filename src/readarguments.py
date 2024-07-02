@@ -62,7 +62,7 @@ class ReadArguments:
         parser.add_argument(
             "-sample",
             "--sample_file",
-            required=True,
+            # required=True,
             type=str,
             help="Sample file name",
             metavar="SAMPLE",
@@ -162,6 +162,22 @@ class ReadArguments:
                 source pointing due north. Default: 180",
             choices=range(0, 360),
             metavar="[0-360]",
+        )
+        default_mode = str("raster")
+        parser.add_argument(
+            "-sdir",
+            "--sample_dir",
+            type=str,
+            default=default_mode,
+            help="Directory containing sample data in a tab delimited file. Default: 'raster'",
+        )
+        default_mode = str("sample_data")
+        parser.add_argument(
+            "-data",
+            "--sample_data",
+            type=str,
+            default=default_mode,
+            help="Tab delimited file containing sample data. Default: 'sample_data'",
         )
         args = parser.parse_args()
         return args

@@ -152,13 +152,20 @@ ColourMap.map_in_colour(
     fig_height=args.figureheight,
     fig_width=args.figurewidth,
     outdir=args.outdir,
-    input=args.indir,
-    samples=args.sample_file,
 )
 
 #################################
 # Part 3: Plot sample locations #
 #################################
+
+# Step1: Read Data and return tuple
+ColourMap.read_sample_info(sample_indir=args.sample_dir, sample_data=args.sample_data)
+
+ColourMap.map_samples(
+    input=args.indir,
+    samples=args.sample_file,
+    alpha=args.alpha,
+)
 
 # Import samples and plot
 # SamplesToMap
