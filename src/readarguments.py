@@ -60,6 +60,14 @@ class ReadArguments:
             metavar="OUTDIR",
         )
         parser.add_argument(
+            "-sample",
+            "--sample_file",
+            required=True,
+            type=str,
+            help="Sample file name",
+            metavar="SAMPLE",
+        )
+        parser.add_argument(
             "-m",
             "--mask",
             type=str,
@@ -106,22 +114,33 @@ class ReadArguments:
             help="A colour gradient selected from Matplotlib's colourmaps. \
                 Found here: https://matplotlib.org/stable/users/explain/colors/colormaps.html \
                 The name of the colour gradient should be provided like: 'viridis' \
-                Default: 'gray'",
+                Default: 'viridis'",
             nargs=1,
             metavar=("COLOURMAP"),
         )
-        default_mode = (7, 3.5)
+        default_mode = int(5)
         parser.add_argument(
-            "-size",
-            "--figure_size",
+            "-h",
+            "--figureheight",
             type=int,
             default=default_mode,
-            help="The length and width of the final figure in inches. \
-                Default: length = 7 inches, width = 3.5 inches (7,3.5)",
-            nargs=2,
-            metavar=("length", "width"),
+            help="The height of the final figure in inches. \
+                Default: height = 5 inches ('5')",
+            nargs=1,
+            metavar=("height"),
         )
-        default_mode = int(1)
+        default_mode = int(10)
+        parser.add_argument(
+            "-w",
+            "--figurewidth",
+            type=int,
+            default=default_mode,
+            help="The width of the final figure in inches. \
+                Default: width = 10 inches ('10')",
+            nargs=1,
+            metavar=("width"),
+        )
+        default_mode = 1
         parser.add_argument(
             "-alt",
             "--altitude",
