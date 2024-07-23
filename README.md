@@ -47,3 +47,10 @@ A custom polygon can also be used using the '--mask country' option. Simply prov
 
 
 ### Sample data
+
+
+Coordinates
+
+Colour from the [available list](https://matplotlib.org/stable/gallery/color/named_colors.html)
+
+Marker shape from the [available list](https://matplotlib.org/stable/api/markers_api.html#module-matplotlib.markers)
