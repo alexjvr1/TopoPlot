@@ -19,6 +19,25 @@ class ColourMap:
     def __init__(self):
         self = self
 
+    def read_data_for_scatter_plot(
+        self,
+        sample_indir,
+        sample_data,
+    ):
+        # Read data from a tab delimited file
+        path_to_data = str(str(sample_indir) + "/" + sample_data)
+        data = pd.read_csv(path_to_data, delimiter="\t", header=0)
+        # Create a dictionary based on the Population and Colour columns
+        colours_dict = dict(zip(data.Population, data.Colour))
+        colours = [colours_dict[i] for i in data["Population"]]
+        # matplotlib function to convert list to rgba colours
+        rgba_colours = colors.to_rgba_array(colours)
+        # Create a dictionary based on the Population and Shape columns
+        marker_dict = dict(zip(data.Population, data.Marker))
+        marker = [marker_dict[i] for i in data["Population"]]
+        return data, colours, marker
+        # fig, ax = plt.subplots()
+
     # Create a map with a colour gradient representing the range in elevation values for our map
     def map_in_colour(
         self,
@@ -60,27 +79,40 @@ class ColourMap:
         # newax = fig.add_axes([0.79, 0.78, 0.08, 0.08], anchor="NE")
         # newax.axis("off")
         output_path = str(str(outdir) + "/colourmap")
-        # Read data from a tab delimited file
-        path_to_data = str(str(sample_indir) + "/" + sample_data)
-        data = pd.read_csv(path_to_data, delimiter="\t", header=0)
-        # Create a dictionary based on the Population and Colour columns
-        colours_dict = dict(zip(data.Population, data.Colour))
-        colours = [colours_dict[i] for i in data["Population"]]
-        # matplotlib function to convert list to rgba colours
-        rgba_colours = colors.to_rgba_array(colours)
-        # Create a dictionary based on the Population and Shape columns
-        marker_dict = dict(zip(data.Population, data.pch))
-        marker = [marker_dict[i] for i in data["Population"]]
-        # fig, ax = plt.subplots()
-        # Scatter plot with marker and colour dictionaries. For loop is needed to plot a different marker for each sample
-        for i in range(len(data)):
-            long = data.Long[i]
-            lat = data.Lat[i]
-            mi = marker[i]
-            ci = rgba_colours[i]
-            plt.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
-        plt.savefig("test.png")
-        plt.show()
+        #if/elif/else statement for plotting scatter plot based on user specified marker and colour, or default values
+        if plotdata=True & manual=False:          
+            data, rgba_colours, marker = read_data_for_scatter_plot(sample_indir, sample_data)
+            # Scatter plot with marker and colour dictionaries. For loop is needed to plot a different marker for each sample
+            for i in range(len(data)):
+                long = data.Long[i]
+                lat = data.Lat[i]
+                mi = marker[i]
+                ci = rgba_colours[i]
+                plt.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
+            plt.savefig("test.png")
+            plt.show()
+        elif plotdata=False & manual=True: 
+            # Scatter plot with marker and colour dictionaries based on the Population column
+            for i in range(len(data)):
+                long = data.Long[i]
+                lat = data.Lat[i]
+                mi = marker[i]
+                ci = rgba_colours[i]
+                plt.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
+            plt.savefig("test.png")
+            plt.show()
+        elif plotdata=False & manual=False: 
+            # Scatter plot with marker and colour dictionaries based on the Population column
+            for i in range(len(data)):
+                long = data.Long[i]
+                lat = data.Lat[i]
+                plt.scatter(x=long, y=lat, color="k", marker="o", zorder=2)
+            plt.savefig("test.png")
+            plt.show()
+        # plt.savefig(output_path + ".png")
+        # plt.savefig(output_path + ".pdf")
+        # pickle.dump(ax, open("myplot.pickle", "wb"))
+        return map
         # plt.savefig(output_path + ".png")
         # plt.savefig(output_path + ".pdf")
         # pickle.dump(ax, open("myplot.pickle", "wb"))
