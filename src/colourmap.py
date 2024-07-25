@@ -51,6 +51,7 @@ class ColourMap:
         outdir,
         sample_indir,
         sample_data,
+        plotdata,
     ):
         # Rescale the colourgradient to the value_range
         colourgrad = mpl.colormaps[str(colourgrad)].resampled(value_range)
@@ -79,9 +80,11 @@ class ColourMap:
         # newax = fig.add_axes([0.79, 0.78, 0.08, 0.08], anchor="NE")
         # newax.axis("off")
         output_path = str(str(outdir) + "/colourmap")
-        #if/elif/else statement for plotting scatter plot based on user specified marker and colour, or default values
-        if plotdata=True:          
-            data, rgba_colours, marker = read_data_for_scatter_plot(sample_indir, sample_data)
+        # if/elif/else statement for plotting scatter plot based on user specified marker and colour, or default values
+        if plotdata == "True":
+            data, rgba_colours, marker = self.read_data_for_scatter_plot(
+                sample_indir, sample_data
+            )
             # Scatter plot with marker and colour dictionaries. For loop is needed to plot a different marker for each sample
             for i in range(len(data)):
                 long = data.Long[i]
@@ -91,7 +94,10 @@ class ColourMap:
                 plt.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
             plt.savefig("test.png")
             plt.show()
-        else: 
+        else:
+            # Read in data file containing Population, Lat, and Long
+            path_to_data = str(str(sample_indir) + "/" + sample_data)
+            data = pd.read_csv(path_to_data, delimiter="\t", header=0)
             # Scatter plot with marker and colour dictionaries based on the Population column
             for i in range(len(data)):
                 long = data.Long[i]

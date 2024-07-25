@@ -155,6 +155,7 @@ ColourMap.map_in_colour(
     outdir=args.outdir,
     sample_indir=args.sample_dir,
     sample_data=args.sample_data,
+    plotdata=args.plotdata,
 )
 
 #################################
