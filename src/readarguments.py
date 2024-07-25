@@ -62,9 +62,11 @@ class ReadArguments:
         parser.add_argument(
             "-sample",
             "--sample_file",
-            # required=True,
+            required=True,
             type=str,
-            help="Sample file name",
+            help="Sample file name. The file should contain at least three columns named 'Population', 'Lat', and 'Long'. The 'Population' \
+            column should use the same word or number to specify individuals belonging to the same population. 'Lat', and 'Long' are the \
+            geographical coordinates in decimal degrees.",
             metavar="SAMPLE",
         )
         parser.add_argument(
@@ -163,7 +165,7 @@ class ReadArguments:
             choices=range(0, 360),
             metavar="[0-360]",
         )
-        default_mode = str("raster")
+        default_mode = str("./raster")
         parser.add_argument(
             "-sdir",
             "--sample_dir",
@@ -178,6 +180,17 @@ class ReadArguments:
             type=str,
             default=default_mode,
             help="Tab delimited file containing sample data. Default: 'sample_data'",
+        )
+        default_mode = str("True")
+        parser.add_argument(
+            "-plotdata",
+            "--plotdata",
+            type=str,
+            required=False,
+            default=default_mode,
+            help="User defined marker and colour choices are supplied in the data file for each sample. This is expected by default.\
+                If specified as 'False', all populations will be plotted with marker='o' (circle), and colour='k' (black). \
+                Default: 'True'",
         )
         args = parser.parse_args()
         return args

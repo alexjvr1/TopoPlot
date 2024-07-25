@@ -80,7 +80,7 @@ class ColourMap:
         # newax.axis("off")
         output_path = str(str(outdir) + "/colourmap")
         #if/elif/else statement for plotting scatter plot based on user specified marker and colour, or default values
-        if plotdata=True & manual=False:          
+        if plotdata=True:          
             data, rgba_colours, marker = read_data_for_scatter_plot(sample_indir, sample_data)
             # Scatter plot with marker and colour dictionaries. For loop is needed to plot a different marker for each sample
             for i in range(len(data)):
@@ -91,17 +91,7 @@ class ColourMap:
                 plt.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
             plt.savefig("test.png")
             plt.show()
-        elif plotdata=False & manual=True: 
-            # Scatter plot with marker and colour dictionaries based on the Population column
-            for i in range(len(data)):
-                long = data.Long[i]
-                lat = data.Lat[i]
-                mi = marker[i]
-                ci = rgba_colours[i]
-                plt.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
-            plt.savefig("test.png")
-            plt.show()
-        elif plotdata=False & manual=False: 
+        else: 
             # Scatter plot with marker and colour dictionaries based on the Population column
             for i in range(len(data)):
                 long = data.Long[i]

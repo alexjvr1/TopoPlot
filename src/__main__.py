@@ -23,19 +23,6 @@ if args.mask == "country" and args.country is None:
         "if --mask country is chosen, a country name needs to be provided with --country"
     )
 
-# Check that marker and colour are specified if --manual=True
-if args.manual == "True" and args.marker is None:
-    parser.error(
-        "if --manual=True, a list of markers and colours for the scatter plot should be provided \
-        to --marker and --colour"
-    )
-
-if args.manual == "True" and args.colour is None:
-    parser.error(
-        "if --manual=True, a list of markers and colours for the scatter plot should be provided \
-        to --marker and --colour"
-    )
-
 
 # TopoMap main function for entry point
 # def main():
