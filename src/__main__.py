@@ -91,7 +91,6 @@ if args.mask == "country" and bool(args.coordinates) == True:
     # create map_extent variable to be used in Part2
     map_extent = ImportMap.define_map_extent(coords=args.coordinates)
     print("map extent is:", map_extent)
-    print(type(map_extent))
 
 
 # Option2 (--country):
@@ -139,7 +138,7 @@ elif args.mask == "coords" and bool(args.country) == False:
     # create map_extent variable to be used in Part2
     map_extent = ImportMap.define_map_extent(coords=args.coordinates)
     print("map extent is:", map_extent)
-    print(type(map_extent))
+
 
 # If neither coordinates or country name are provided:
 else:

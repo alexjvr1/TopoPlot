@@ -73,10 +73,10 @@ class ColourMap:
             cmap=map_colourgrad,
             norm=colors.LogNorm(),
             extent=map_extent,
-            zorder=0,
+            zorder=1,
         )
         plt.axes(projection=ccrs.PlateCarree())
-        plt.imshow(hillshade, cmap="Greys", alpha=0.3, extent=map_extent, zorder=1)
+        plt.imshow(hillshade, cmap="Greys", alpha=0.3, extent=map_extent, zorder=0)
         ax.axis("on")
         # newax = fig.add_axes([0.79, 0.78, 0.08, 0.08], anchor="NE")
         # newax.axis("off")
