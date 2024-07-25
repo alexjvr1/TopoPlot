@@ -88,6 +88,10 @@ if args.mask == "country" and bool(args.coordinates) == True:
         args.coordinates,
     )
 
+    # create map_extent variable to be used in Part2
+    map_extent = ImportMap.define_map_extent(coords=args.coordinates)
+
+
 # Option2 (--country):
 # Else plot a map of the country without further clipping
 elif args.mask == "country" and bool(args.coordinates) == False:
@@ -130,6 +134,8 @@ elif args.mask == "coords" and bool(args.country) == False:
         args.coordinates,
     )
 
+    # create map_extent variable to be used in Part2
+    map_extent = ImportMap.define_max_extent(coords=args.coordinates)
 
 # If neither coordinates or country name are provided:
 else:
@@ -152,6 +158,7 @@ ColourMap.map_in_colour(
     altitude=args.altitude,
     fig_height=args.figureheight,
     fig_width=args.figurewidth,
+    map_extent=map_extent,
     outdir=args.outdir,
     sample_indir=args.sample_dir,
     sample_data=args.sample_data,

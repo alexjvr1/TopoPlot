@@ -48,6 +48,7 @@ class ColourMap:
         altitude,
         fig_height,
         fig_width,
+        map_extent,
         outdir,
         sample_indir,
         sample_data,
@@ -66,16 +67,15 @@ class ColourMap:
         # plot the figure
         fig, ax = plt.subplots()
         fig.set_size_inches(int(fig_width), int(fig_height))
-        MAP_EXTENT = (-5.9, 2.2, 49.8, 53.6)
         plt.imshow(
             clipped_array[0],
             cmap=map_colourgrad,
             norm=colors.LogNorm(),
-            extent=MAP_EXTENT,
+            extent=map_extent,
             zorder=0,
         )
         plt.axes(projection=ccrs.PlateCarree())
-        plt.imshow(hillshade, cmap="Greys", alpha=0.3, extent=MAP_EXTENT, zorder=1)
+        plt.imshow(hillshade, cmap="Greys", alpha=0.3, extent=map_extent, zorder=1)
         ax.axis("on")
         # newax = fig.add_axes([0.79, 0.78, 0.08, 0.08], anchor="NE")
         # newax.axis("off")
