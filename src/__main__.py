@@ -152,21 +152,27 @@ ColourMap.map_in_colour(
     fig_height=args.figureheight,
     fig_width=args.figurewidth,
     outdir=args.outdir,
+    sample_indir=args.sample_dir,
+    sample_data=args.sample_data,
 )
 
 #################################
 # Part 3: Plot sample locations #
 #################################
 
-# Step1: Read Data and return tuple
-ColourMap.read_sample_info(sample_indir=args.sample_dir, sample_data=args.sample_data)
+# Step1: Read Data and return pandas dataframe
+# data = ColourMap.read_sample_info(
+#    sample_indir=args.sample_dir, sample_data=args.sample_data
+# )
 
-ColourMap.map_samples(
-    input=args.indir,
-    samples=args.sample_file,
-    alpha=args.alpha,
-)
+# View the first 5 lines of the dataframe to check headers and data have read in properly
+# print("Sample data to plot:")
+# print(data.head())
 
+# Step 2: Plot data on colourmap
+
+
+# ColourMap.map_samples(
 # Import samples and plot
 # SamplesToMap
 # Variables: colour, size, shape, population (for legend)
