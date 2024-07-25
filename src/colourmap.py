@@ -71,14 +71,14 @@ class ColourMap:
         # Create a dictionary based on the Population and Shape columns
         marker_dict = dict(zip(data.Population, data.pch))
         marker = [marker_dict[i] for i in data["Population"]]
-        print(marker)
-        print(type(marker))
         # fig, ax = plt.subplots()
         # Scatter plot with marker and colour dictionaries. For loop is needed to plot a different marker for each sample
         for i in range(len(data)):
-            plt.scatter(
-                data.Long[i], data.Lat[i], c=rgba_colours[i], marker=marker[i], zorder=2
-            )
+            long = data.Long[i]
+            lat = data.Lat[i]
+            mi = marker[i]
+            ci = rgba_colours[i]
+            plt.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
         plt.savefig("test.png")
         plt.show()
         # plt.savefig(output_path + ".png")
