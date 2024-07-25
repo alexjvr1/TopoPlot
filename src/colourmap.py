@@ -67,6 +67,7 @@ class ColourMap:
         # plot the figure
         fig, ax = plt.subplots()
         fig.set_size_inches(int(fig_width), int(fig_height))
+        map_extent = map_extent
         plt.imshow(
             clipped_array[0],
             cmap=map_colourgrad,

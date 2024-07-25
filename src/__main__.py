@@ -90,6 +90,8 @@ if args.mask == "country" and bool(args.coordinates) == True:
 
     # create map_extent variable to be used in Part2
     map_extent = ImportMap.define_map_extent(coords=args.coordinates)
+    print("map extent is:", map_extent)
+    print(type(map_extent))
 
 
 # Option2 (--country):
@@ -135,7 +137,9 @@ elif args.mask == "coords" and bool(args.country) == False:
     )
 
     # create map_extent variable to be used in Part2
-    map_extent = ImportMap.define_max_extent(coords=args.coordinates)
+    map_extent = ImportMap.define_map_extent(coords=args.coordinates)
+    print("map extent is:", map_extent)
+    print(type(map_extent))
 
 # If neither coordinates or country name are provided:
 else:
@@ -150,6 +154,7 @@ else:
 
 # Create a colour map using a custom colour gradient and write to file
 
+# map_extent = (-5.9, 2.2, 49.8, 60.0)
 ColourMap.map_in_colour(
     colourgrad=args.colourmap,
     value_range=value_range,
