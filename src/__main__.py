@@ -154,7 +154,7 @@ else:
 
 # Create a colour map using a custom colour gradient and write to file
 
-# map_extent = (-5.9, 2.2, 49.8, 60.0)
+
 ColourMap.map_in_colour(
     colourgrad=args.colourmap,
     value_range=value_range,
