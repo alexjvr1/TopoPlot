@@ -46,4 +46,30 @@ A custom polygon can also be used using the '--mask country' option. Simply prov
 
 
 
+### Options for hillshade aesthetics
+
+
+
+#### altitude
+
+
+#### azimuth
+
+
+# default: 
+
+
 ### Sample data
+
+
+### Options for plotting markers
+
+#### Shape
+
+A full list of the available markers can be found in the matplotlib documentation [here](https://matplotlib.org/1.4.1/api/markers_api.html). The most commonly used markers are: 
+
+#TODO add figure of markers
+
+
+#### Colour
+
