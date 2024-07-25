@@ -62,6 +62,7 @@ A custom polygon can also be used using the '--mask country' option. Simply prov
 ### Sample data
 
 
+<<<<<<< HEAD
 ### Options for plotting markers
 
 #### Shape
@@ -73,3 +74,10 @@ A full list of the available markers can be found in the matplotlib documentatio
 
 #### Colour
 
+=======
+Coordinates
+
+Colour from the [available list](https://matplotlib.org/stable/gallery/color/named_colors.html)
+
+Marker shape from the [available list](https://matplotlib.org/stable/api/markers_api.html#module-matplotlib.markers)
+>>>>>>> 21887a8f72d9cd17595923e0d1264abfaefc3c9d
