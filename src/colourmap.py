@@ -29,13 +29,15 @@ class ColourMap:
         data = pd.read_csv(path_to_data, delimiter="\t", header=0)
         # Create a dictionary based on the Population and Colour columns
         colours_dict = dict(zip(data.Population, data.Colour))
+        # The colours dictionary will be used to create the legend for the scatter plot
+        legend = colours_dict
         colours = [colours_dict[i] for i in data["Population"]]
         # matplotlib function to convert list to rgba colours
         rgba_colours = colors.to_rgba_array(colours)
         # Create a dictionary based on the Population and Shape columns
         marker_dict = dict(zip(data.Population, data.Marker))
         marker = [marker_dict[i] for i in data["Population"]]
-        return data, colours, marker
+        return data, colours, marker, legend
         # fig, ax = plt.subplots()
 
     # Create a map with a colour gradient representing the range in elevation values for our map
@@ -64,26 +66,27 @@ class ColourMap:
         map_colourgrad = ListedColormap(newcolours)
         # Define hillshade
         hillshade = es.hillshade(clipped_array[0], azimuth, altitude)
+        # set variables
+        map_extent = map_extent
         # plot the figure
         fig, ax = plt.subplots()
         fig.set_size_inches(int(fig_width), int(fig_height))
-        map_extent = map_extent
-        plt.imshow(
+        ax.imshow(
             clipped_array[0],
             cmap=map_colourgrad,
             norm=colors.LogNorm(),
             extent=map_extent,
             zorder=1,
         )
-        plt.axes(projection=ccrs.PlateCarree())
-        plt.imshow(hillshade, cmap="Greys", alpha=0.3, extent=map_extent, zorder=0)
+        # ax.axes(projection=ccrs.PlateCarree())
+        ax.imshow(hillshade, cmap="Greys", alpha=0.3, extent=map_extent, zorder=0)
         ax.axis("on")
         # newax = fig.add_axes([0.79, 0.78, 0.08, 0.08], anchor="NE")
         # newax.axis("off")
         output_path = str(str(outdir) + "/colourmap")
         # if/elif/else statement for plotting scatter plot based on user specified marker and colour, or default values
         if plotdata == "True":
-            data, rgba_colours, marker = self.read_data_for_scatter_plot(
+            data, rgba_colours, marker, legend = self.read_data_for_scatter_plot(
                 sample_indir, sample_data
             )
             # Scatter plot with marker and colour dictionaries. For loop is needed to plot a different marker for each sample
@@ -92,7 +95,8 @@ class ColourMap:
                 lat = data.Lat[i]
                 mi = marker[i]
                 ci = rgba_colours[i]
-                plt.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
+                ax.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
+            ax.legend(loc="upper right")
             plt.savefig("test.png")
             plt.show()
         else:
@@ -103,7 +107,8 @@ class ColourMap:
             for i in range(len(data)):
                 long = data.Long[i]
                 lat = data.Lat[i]
-                plt.scatter(x=long, y=lat, color="k", marker="o", zorder=2)
+                ax.scatter(x=long, y=lat, color="k", marker="o", zorder=2)
+            ax.legend(loc="upper right")
             plt.savefig("test.png")
             plt.show()
         # plt.savefig(output_path + ".png")
