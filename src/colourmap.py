@@ -2,16 +2,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
-from matplotlib import cm
 from matplotlib import colors
 from matplotlib.colors import ListedColormap
 import earthpy.spatial as es
 import pandas as pd
-from shapely.geometry import Point
-import geopandas as gpd
-from geopandas import GeoDataFrame
 import pickle
-import cartopy.crs as ccrs
 import random
 
 
@@ -145,18 +140,6 @@ class ColourMap:
         # plt.savefig(output_path + ".pdf")
         # pickle.dump(ax, open("myplot.pickle", "wb"))
         return map
-
-    # Read in sample and location information
-    def read_sample_info(self, sample_indir, sample_data):
-        # Read data from a tab delimited file
-        path_to_data = str(str(sample_indir) + "/" + sample_data)
-        data = pd.read_csv(path_to_data, delimiter="\t")
-        colours_dict = dict(zip(data.Population, data.Colour))
-        colours = [colours_dict[i] for i in data["Population"]]
-        fig, ax = plt.subplots()
-        ax.scatter(data.Long, data.Lat, c=colours)
-        fig.savefig("test.png")
-        return data
 
     # Plot sample locations on the colour map
     def map_samples(
