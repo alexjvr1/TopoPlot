@@ -133,6 +133,16 @@ class ReadArguments:
                 Default: 'viridis'",
             metavar=("COLOURMAP"),
         )
+        default_mode = str("TopoPlot Map")
+        parser.add_argument(
+            "-title",
+            "--maptitle",
+            type=str,
+            default=default_mode,
+            help="Provide a title for the final map as a string. Like: 'TopoPlot Map' \
+                Default: 'TopoPlot Map'",
+            metavar=("MAPTITLE"),
+        )
         default_mode = int(5)
         parser.add_argument(
             "-h",
