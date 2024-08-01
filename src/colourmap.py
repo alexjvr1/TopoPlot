@@ -49,7 +49,7 @@ class ColourMap:
         plotdata,
     ):
         # Rescale the colourgradient to the value_range
-        colourgrad = mpl.colormaps[str(colourgrad)].resampled(value_range)
+        colourgrad = mpl.colormaps[colourgrad].resampled(value_range)
         newcolours = colourgrad(np.linspace(0, 1, 256))
         # Add background colour: white
         background_colour_white = np.array([255 / 255, 255 / 255, 255 / 255, 1.0])
@@ -73,10 +73,10 @@ class ColourMap:
             zorder=0,
         )
         # Layer 2: Add hillshade
-        ax.imshow(hillshade, cmap="Greys", alpha=0.5, extent=map_extent, zorder=1)
+        ax.imshow(hillshade, cmap="Greys", alpha=alpha, extent=map_extent, zorder=1)
         ax.axis("on")
         output_path = str(str(outdir) + "/colourmap")
-        # if/elif/else statement for plotting scatter plot based on user specified marker and colour, or default values
+        # if/else statement for plotting scatter plot based on user specified marker and colour, or default values
         if plotdata == "True":
             # read data in
             data, colour_dict, marker_dict = self.read_data_for_scatter_plot(
