@@ -47,6 +47,7 @@ class ColourMap:
         sample_indir,
         sample_data,
         plotdata,
+        maptitle,
     ):
         # Rescale the colourgradient to the value_range
         colourgrad = mpl.colormaps[colourgrad].resampled(value_range)
@@ -100,6 +101,7 @@ class ColourMap:
                 )
                 # Plot legend in the upper right corner
                 ax.legend(loc="upper right")
+            plt.title(maptitle)
             plt.savefig("test.png")
             plt.show()
         # If colour and marker is not assigned, plot in black and randomly assign marker shape
@@ -133,6 +135,7 @@ class ColourMap:
                 )
                 # Plot legend in the upper right corner
                 ax.legend(loc="upper right")
+            plt.title(maptitle)
             plt.savefig("test.png")
             plt.show()
         # plt.savefig(output_path + ".png")
