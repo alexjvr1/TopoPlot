@@ -30,14 +30,13 @@ class ColourMap:
         # Create a dictionary based on the Population and Colour columns
         colours_dict = dict(zip(data.Population, data.Colour))
         # The colours dictionary will be used to create the legend for the scatter plot
-        legend = colours_dict
         colours = [colours_dict[i] for i in data["Population"]]
         # matplotlib function to convert list to rgba colours
         rgba_colours = colors.to_rgba_array(colours)
         # Create a dictionary based on the Population and Shape columns
         marker_dict = dict(zip(data.Population, data.Marker))
         marker = [marker_dict[i] for i in data["Population"]]
-        return data, colours, marker, legend
+        return data, rgba_colours, marker, colours_dict, marker_dict
         # fig, ax = plt.subplots()
 
     # Create a map with a colour gradient representing the range in elevation values for our map
@@ -86,17 +85,42 @@ class ColourMap:
         output_path = str(str(outdir) + "/colourmap")
         # if/elif/else statement for plotting scatter plot based on user specified marker and colour, or default values
         if plotdata == "True":
-            data, rgba_colours, marker, legend = self.read_data_for_scatter_plot(
-                sample_indir, sample_data
+            data, rgba_colours, marker, colour_dict, marker_dict = (
+                self.read_data_for_scatter_plot(sample_indir, sample_data)
             )
+            for name, group in data.groupby("Population"):
+                group = group.copy()
+                markers = marker_dict.get(name)
+
+                ax.scatter(
+                    x=group["Long"],
+                    y=group["Lat"],
+                    marker=markers,
+                    color=group["Population"].map(colour_dict),
+                    label=name,
+                )
+                ax.legend(loc="upper right")
             # Scatter plot with marker and colour dictionaries. For loop is needed to plot a different marker for each sample
-            for i in range(len(data)):
-                long = data.Long[i]
-                lat = data.Lat[i]
-                mi = marker[i]
-                ci = rgba_colours[i]
-                ax.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
-            ax.legend(loc="upper right")
+            # for i in range(len(data)):
+            #     long = data.Long[i]
+            #     lat = data.Lat[i]
+            #     mi = marker[i]
+            #     ci = rgba_colours[i]
+            #     ax.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
+            # pops = [
+            #    plt.Line2D([0, 0], [0, 0], color=color, marker="o", linestyle="")
+            #    for color in list(colours_dict.values())
+            # ]
+            # pops = [
+            #     plt.Line2D(
+            #         [0, 0],
+            #         [0, 0],
+            #         color=data["Population"].map(colours_dict),
+            #         marker=data["Population"].map(marker_dict),
+            #         linestyle="",
+            #     )
+            # ]
+            # ax.legend(pops, colours_dict.keys(), numpoints=1)
             plt.savefig("test.png")
             plt.show()
         else:
@@ -107,8 +131,13 @@ class ColourMap:
             for i in range(len(data)):
                 long = data.Long[i]
                 lat = data.Lat[i]
-                ax.scatter(x=long, y=lat, color="k", marker="o", zorder=2)
-            ax.legend(loc="upper right")
+                scatter = ax.scatter(x=long, y=lat, color="k", marker="o", zorder=2)
+                # The following two lines generate custom fake lines that will be used as legend entries:
+                pops = [
+                    plt.Line2D([0, 0], [0, 0], color=color, marker="<", linestyle="")
+                    for color in list(legend.values())
+                ]
+                ax.legend(pops, legend.keys(), numpoints=1)
             plt.savefig("test.png")
             plt.show()
         # plt.savefig(output_path + ".png")
