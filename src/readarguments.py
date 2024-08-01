@@ -39,7 +39,7 @@ class ReadArguments:
             raise argparse.ArgumentTypeError("Must be a floating point number")
         if f < MIN_VAL or f > MAX_VAL:
             raise argparse.ArgumentTypeError(
-                "Argument must be < " + str(MAX_VAL) + "and > " + str(MIN_VAL)
+                "Argument must be > " + str(MIN_VAL) + " and < " + str(MAX_VAL)
             )
         return f
 
