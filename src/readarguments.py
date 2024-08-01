@@ -121,7 +121,7 @@ class ReadArguments:
             nargs=1,
             metavar=(range(0 - 255)),
         )
-        default_mode = "viridis"
+        default_mode = str("viridis")
         parser.add_argument(
             "-cm",
             "--colourmap",
@@ -131,7 +131,6 @@ class ReadArguments:
                 Found here: https://matplotlib.org/stable/users/explain/colors/colormaps.html \
                 The name of the colour gradient should be provided like: 'viridis' \
                 Default: 'viridis'",
-            nargs=1,
             metavar=("COLOURMAP"),
         )
         default_mode = int(5)
