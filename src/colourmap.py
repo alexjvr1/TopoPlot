@@ -12,6 +12,7 @@ import geopandas as gpd
 from geopandas import GeoDataFrame
 import pickle
 import cartopy.crs as ccrs
+import random
 
 
 # All functions related to colouring and adding a light source to the map
@@ -28,16 +29,10 @@ class ColourMap:
         path_to_data = str(str(sample_indir) + "/" + sample_data)
         data = pd.read_csv(path_to_data, delimiter="\t", header=0)
         # Create a dictionary based on the Population and Colour columns
-        colours_dict = dict(zip(data.Population, data.Colour))
-        # The colours dictionary will be used to create the legend for the scatter plot
-        colours = [colours_dict[i] for i in data["Population"]]
-        # matplotlib function to convert list to rgba colours
-        rgba_colours = colors.to_rgba_array(colours)
+        colour_dict = dict(zip(data.Population, data.Colour))
         # Create a dictionary based on the Population and Shape columns
         marker_dict = dict(zip(data.Population, data.Marker))
-        marker = [marker_dict[i] for i in data["Population"]]
-        return data, rgba_colours, marker, colours_dict, marker_dict
-        # fig, ax = plt.subplots()
+        return data, colour_dict, marker_dict
 
     # Create a map with a colour gradient representing the range in elevation values for our map
     def map_in_colour(
@@ -85,59 +80,61 @@ class ColourMap:
         output_path = str(str(outdir) + "/colourmap")
         # if/elif/else statement for plotting scatter plot based on user specified marker and colour, or default values
         if plotdata == "True":
-            data, rgba_colours, marker, colour_dict, marker_dict = (
-                self.read_data_for_scatter_plot(sample_indir, sample_data)
+            # read data in
+            data, colour_dict, marker_dict = self.read_data_for_scatter_plot(
+                sample_indir, sample_data
             )
+            # Group data by population
             for name, group in data.groupby("Population"):
                 group = group.copy()
+                # marker assigned to each population
                 markers = marker_dict.get(name)
-
+                # Create scatter plot and assign marker based on population group.
                 ax.scatter(
                     x=group["Long"],
                     y=group["Lat"],
                     marker=markers,
+                    # Assign colour by referring to colour dictionary
                     color=group["Population"].map(colour_dict),
+                    # assign label name for legend
                     label=name,
+                    zorder=2,
                 )
+                # Plot legend in the upper right corner
                 ax.legend(loc="upper right")
-            # Scatter plot with marker and colour dictionaries. For loop is needed to plot a different marker for each sample
-            # for i in range(len(data)):
-            #     long = data.Long[i]
-            #     lat = data.Lat[i]
-            #     mi = marker[i]
-            #     ci = rgba_colours[i]
-            #     ax.scatter(x=long, y=lat, color=ci, marker=mi, zorder=2)
-            # pops = [
-            #    plt.Line2D([0, 0], [0, 0], color=color, marker="o", linestyle="")
-            #    for color in list(colours_dict.values())
-            # ]
-            # pops = [
-            #     plt.Line2D(
-            #         [0, 0],
-            #         [0, 0],
-            #         color=data["Population"].map(colours_dict),
-            #         marker=data["Population"].map(marker_dict),
-            #         linestyle="",
-            #     )
-            # ]
-            # ax.legend(pops, colours_dict.keys(), numpoints=1)
             plt.savefig("test.png")
             plt.show()
+        # If colour and marker is not assigned, plot in black and randomly assign marker shape
         else:
             # Read in data file containing Population, Lat, and Long
             path_to_data = str(str(sample_indir) + "/" + sample_data)
             data = pd.read_csv(path_to_data, delimiter="\t", header=0)
-            # Scatter plot with marker and colour dictionaries based on the Population column
-            for i in range(len(data)):
-                long = data.Long[i]
-                lat = data.Lat[i]
-                scatter = ax.scatter(x=long, y=lat, color="k", marker="o", zorder=2)
-                # The following two lines generate custom fake lines that will be used as legend entries:
-                pops = [
-                    plt.Line2D([0, 0], [0, 0], color=color, marker="<", linestyle="")
-                    for color in list(legend.values())
-                ]
-                ax.legend(pops, legend.keys(), numpoints=1)
+            # Get list of population names
+            pop = data.Population.unique()
+            # hex values to create a random colour for each population
+            hexadecimal_alphabets = "0123456789ABCDEF"
+            # generate a random hex colour for each population
+            color = [
+                "#" + "".join([random.choice(hexadecimal_alphabets) for j in range(6)])
+                for i in pop
+            ]
+            # create a dictionary of population names and random colours
+            colour_dict = dict(zip(pop, color))
+            # Group data by population
+            for name, group in data.groupby("Population"):
+                group = group.copy()
+                ax.scatter(
+                    x=group["Long"],
+                    y=group["Lat"],
+                    marker="o",
+                    # Assign colour by referring to colour dictionary
+                    color=group["Population"].map(colour_dict),
+                    # assign label name for legend
+                    label=name,
+                    zorder=2,
+                )
+                # Plot legend in the upper right corner
+                ax.legend(loc="upper right")
             plt.savefig("test.png")
             plt.show()
         # plt.savefig(output_path + ".png")
