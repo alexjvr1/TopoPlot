@@ -159,6 +159,7 @@ ColourMap.map_in_colour(
     value_range=value_range,
     clipped_array=out_img,
     azimuth=args.azimuth,
+    alpha=args.alpha,
     altitude=args.altitude,
     fig_height=args.figureheight,
     fig_width=args.figurewidth,

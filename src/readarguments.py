@@ -61,7 +61,7 @@ class ReadArguments:
         )
         parser.add_argument(
             "-sample",
-            "--sample_file",
+            "--sample_data",
             required=True,
             type=str,
             help="Sample file name. The file should contain at least three columns named 'Population', 'Lat', and 'Long'. The 'Population' \
@@ -165,6 +165,19 @@ class ReadArguments:
             choices=range(0, 360),
             metavar="[0-360]",
         )
+        default_mode = int(0.5)
+        parser.add_argument(
+            "-alpha",
+            "--alpha",
+            type=int,
+            default=default_mode,
+            help="Value between 0 and 1 that sets the transparency of the hillshade layer. \
+                A value of 1 will mean no colour from the colour relief map will be visible. \
+                A value of 0 will make the hillshade completely transparent. Default: 0.5",
+            choices=range(0, 360),
+            metavar="[0-360]",
+        )
+
         default_mode = str("./raster")
         parser.add_argument(
             "-sdir",
@@ -172,14 +185,6 @@ class ReadArguments:
             type=str,
             default=default_mode,
             help="Directory containing sample data in a tab delimited file. Default: 'raster'",
-        )
-        default_mode = str("sample_data")
-        parser.add_argument(
-            "-data",
-            "--sample_data",
-            type=str,
-            default=default_mode,
-            help="Tab delimited file containing sample data. Default: 'sample_data'",
         )
         default_mode = str("True")
         parser.add_argument(

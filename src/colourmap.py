@@ -10,11 +10,13 @@ import pickle
 import random
 
 
-# All functions related to colouring and adding a light source to the map
+# All functions related to plotting colour map with scatter plot of sample locations layered on top
 class ColourMap:
     def __init__(self):
         self = self
 
+    # Helper function
+    # Read data from a csv file and return data, and dictionaries of pop:colour and pop:marker
     def read_data_for_scatter_plot(
         self,
         sample_indir,
@@ -37,6 +39,7 @@ class ColourMap:
         clipped_array,
         azimuth,
         altitude,
+        alpha,
         fig_height,
         fig_width,
         map_extent,
@@ -57,21 +60,21 @@ class ColourMap:
         hillshade = es.hillshade(clipped_array[0], azimuth, altitude)
         # set variables
         map_extent = map_extent
+        alpha = alpha
         # plot the figure
         fig, ax = plt.subplots()
         fig.set_size_inches(int(fig_width), int(fig_height))
+        # Layer 1:colour relief map
         ax.imshow(
             clipped_array[0],
             cmap=map_colourgrad,
             norm=colors.LogNorm(),
             extent=map_extent,
-            zorder=1,
+            zorder=0,
         )
-        # ax.axes(projection=ccrs.PlateCarree())
-        ax.imshow(hillshade, cmap="Greys", alpha=0.3, extent=map_extent, zorder=0)
+        # Layer 2: Add hillshade
+        ax.imshow(hillshade, cmap="Greys", alpha=0.5, extent=map_extent, zorder=1)
         ax.axis("on")
-        # newax = fig.add_axes([0.79, 0.78, 0.08, 0.08], anchor="NE")
-        # newax.axis("off")
         output_path = str(str(outdir) + "/colourmap")
         # if/elif/else statement for plotting scatter plot based on user specified marker and colour, or default values
         if plotdata == "True":
@@ -140,22 +143,3 @@ class ColourMap:
         # plt.savefig(output_path + ".pdf")
         # pickle.dump(ax, open("myplot.pickle", "wb"))
         return map
-
-    # Plot sample locations on the colour map
-    def map_samples(
-        self, input, samples, marker_size, marker_colour, marker_style, alpha
-    ):
-        # Load map from pickled colour map saved with map_in_colour()
-        fig_handle = pickle.load(open("myplot.pickle", "rb"))
-        fig_handle.pyplot.scatter()
-        ax.scatter()
-        ax.set_xlabel("Latitude")
-        ax.set_ylabel("Longitude")
-        # sample_df = pd.read_table((str(input) + "/" + samples))
-        # Lat =
-        # Long =
-        # geometry = [Point(xy) for xy in zip(sample_df["Long"], sample_df["Lat"])]
-        # gdf = GeoDataFrame(sample_df, geometry=geometry)
-        # gdf.plot(ax=ax, marker="o", color="red", markersize=15)
-        # plt.show()
-        # return fig, ax
