@@ -29,6 +29,20 @@ class ReadArguments:
                 "Coordinates must be given divided by commas and space, dot, or semicolon e.g.: 'x,y k,l'"
             )
 
+    # Helper function to limit the range of a float
+    def range_limited_float_type(self, arg):
+        MIN_VAL = float("0.0")
+        MAX_VAL = float("1.0")
+        try:
+            f = float(arg)
+        except ValueError:
+            raise argparse.ArgumentTypeError("Must be a floating point number")
+        if f < MIN_VAL or f > MAX_VAL:
+            raise argparse.ArgumentTypeError(
+                "Argument must be < " + str(MAX_VAL) + "and > " + str(MIN_VAL)
+            )
+        return f
+
     # Read arguments supplied in the command line
     def get_args(self) -> argparse.Namespace:
         """Get arguments
@@ -165,17 +179,16 @@ class ReadArguments:
             choices=range(0, 360),
             metavar="[0-360]",
         )
-        default_mode = int(0.5)
+        default_mode = float(0.5)
         parser.add_argument(
             "-alpha",
             "--alpha",
-            type=int,
+            type=self.range_limited_float_type,
             default=default_mode,
-            help="Value between 0 and 1 that sets the transparency of the hillshade layer. \
+            help="Value between 0.0 and 1.0 that sets the transparency of the hillshade layer. \
                 A value of 1 will mean no colour from the colour relief map will be visible. \
                 A value of 0 will make the hillshade completely transparent. Default: 0.5",
-            choices=range(0, 360),
-            metavar="[0-360]",
+            metavar="[0.0-1.0]",
         )
 
         default_mode = str("./raster")
