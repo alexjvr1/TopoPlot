@@ -15,8 +15,22 @@ class ColourMap:
     def __init__(self):
         self = self
 
-    # Helper function
-    # Read data from a csv file and return data, and dictionaries of pop:colour and pop:marker
+    # Helper functions:
+    # Helper function to create colourgradient scaled to the value range as determined by \
+    # the elevational scale
+    # Rescale the colourgradient to the value_range
+    def create_colourgrad(self, colourgrad, value_range):
+        colourgrad = mpl.colormaps[colourgrad].resampled(value_range)
+        newcolours = colourgrad(np.linspace(0, 1, 256))
+        # Add background colour: white
+        background_colour_white = np.array([255 / 255, 255 / 255, 255 / 255, 1.0])
+        newcolours = np.vstack((newcolours, background_colour_white))
+        # create the final colour gradient
+        map_colourgrad = ListedColormap(newcolours)
+        return map_colourgrad
+
+    # Helper function to read data from a csv file and return data, and dictionaries of \
+    # pop:colour and pop:marker
     def read_data_for_scatter_plot(
         self,
         sample_indir,
@@ -49,19 +63,13 @@ class ColourMap:
         plotdata,
         maptitle,
     ):
-        # Rescale the colourgradient to the value_range
-        colourgrad = mpl.colormaps[colourgrad].resampled(value_range)
-        newcolours = colourgrad(np.linspace(0, 1, 256))
-        # Add background colour: white
-        background_colour_white = np.array([255 / 255, 255 / 255, 255 / 255, 1.0])
-        newcolours = np.vstack((newcolours, background_colour_white))
-        # create the final colour gradient
-        map_colourgrad = ListedColormap(newcolours)
-        # Define hillshade
-        hillshade = es.hillshade(clipped_array[0], azimuth, altitude)
+        # Rescale the chosen colour gradient to the elevational value_range
+        map_colourgrad = self.create_colourgrad(colourgrad, value_range)
         # set variables
         map_extent = map_extent
         alpha = alpha
+        # Define hillshade
+        hillshade = es.hillshade(clipped_array[0], azimuth, altitude)
         # plot the figure
         fig, ax = plt.subplots()
         fig.set_size_inches(int(fig_width), int(fig_height))
@@ -76,8 +84,10 @@ class ColourMap:
         # Layer 2: Add hillshade
         ax.imshow(hillshade, cmap="Greys", alpha=alpha, extent=map_extent, zorder=1)
         ax.axis("on")
-        output_path = str(str(outdir) + "/colourmap")
-        # if/else statement for plotting scatter plot based on user specified marker and colour, or default values
+        # output_path = str(str(outdir) + "/colourmap")
+        # Layer 3: Plot samples
+        # if/else statement for plotting scatter plot based on user specified marker \
+        # and colour, or default values
         if plotdata == "True":
             # read data in
             data, colour_dict, marker_dict = self.read_data_for_scatter_plot(
@@ -138,11 +148,6 @@ class ColourMap:
             plt.title(maptitle)
             plt.savefig("test.png")
             plt.show()
-        # plt.savefig(output_path + ".png")
-        # plt.savefig(output_path + ".pdf")
-        # pickle.dump(ax, open("myplot.pickle", "wb"))
-        return map
-        # plt.savefig(output_path + ".png")
-        # plt.savefig(output_path + ".pdf")
-        # pickle.dump(ax, open("myplot.pickle", "wb"))
+        plt.savefig(output_path + ".png")
+        plt.savefig(output_path + ".pdf")
         return map
