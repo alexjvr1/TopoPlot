@@ -63,10 +63,6 @@ if args.mask == "country" and bool(args.coordinates) == True:
         indir=args.indir, country=args.country, outdir=args.outdir
     )
     print("Clipped", args.country, "raster (*.tif) and figure (*.png) saved to", outdir)
-    # The line `print("value range:", value_range)` is printing out the value range of the elevation
-    # assigned to each cell in the map after it has been clipped or masked. This information can be
-    # useful for understanding the range of elevation values present in the specific region of
-    # interest that is being displayed on the map.
 
     # Write bounding box polygon to shapefile
     polygon = ImportMap.bbox(coords=args.coordinates)
