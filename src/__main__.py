@@ -6,14 +6,11 @@ from readarguments import ReadArguments
 from importmap import ImportMap
 from colourmap import ColourMap
 
-# from samplestomap import SamplesToMap
-
 ReadArguments = ReadArguments()
 ImportMap = ImportMap()
 ColourMap = ColourMap()
-# SamplesToMap = SamplesToMap()
 
-# Import all arguments.
+# Import all arguments supplied by user, otherwise use defaults.
 args = ReadArguments.get_args()
 print(args)
 
@@ -33,7 +30,7 @@ outdir.mkdir(exist_ok=True)
 
 
 ################################################################
-# Part 1a: Create a mosaic raster using the input raster files #
+# Part 1: Create a mosaic raster using the input raster files #
 ################################################################
 # Import raster file and return the 'mosaic' variable of all the tiles stitched together
 # Save mosaic.tif, and save a plot (.png) of the mosaic map to the output folder
@@ -45,8 +42,10 @@ print("Merged raster file (*.tif) and figure (*.png) saved to", outdir)
 
 
 ####################################################################
-# Part 1b: Mask the mosaic raster using country and/or coordinates #
+# Part 2: Mask the mosaic raster using country and/or coordinates #
 ####################################################################
+# Choose from three options to mask the raster file according to the required \
+# shape or coordinates.
 
 # Option 1 (--country + --coordinates):
 # Create a mask to crop the map and show only the region of interest (ImportMap)
@@ -94,7 +93,7 @@ if args.mask == "country" and bool(args.coordinates) == True:
 
 
 # Option2 (--country):
-# Else plot a map of the country without further clipping
+# Plot a map of the country without further clipping
 elif args.mask == "country" and bool(args.coordinates) == False:
     print("Clipping raster with mask for", args.country)
     out_img, value_range = ImportMap.mask_map_by_country(
@@ -108,7 +107,7 @@ elif args.mask == "country" and bool(args.coordinates) == False:
     )
 
 # Option 3 (--coordinates):
-# Else mask the map using the bounding box created by the coordinates only.
+# Mask the map using the bounding box created by the coordinates only.
 elif args.mask == "coords" and bool(args.country) == False:
     print("Clip map by coordinates")
 
@@ -147,12 +146,9 @@ else:
         --coordinates and/or --country are required arguments"
     )
 
-##########################
-# Part 2: Colour the map #
-##########################
-
-# Create a colour map using a custom colour gradient and write to file
-
+###########################################
+# Part 2: Plot the colour map and samples #
+###########################################
 
 ColourMap.map_in_colour(
     colourgrad=args.colourmap,
@@ -170,29 +166,6 @@ ColourMap.map_in_colour(
     plotdata=args.plotdata,
     maptitle=args.maptitle,
 )
-
-#################################
-# Part 3: Plot sample locations #
-#################################
-
-# Step1: Read Data and return pandas dataframe
-# data = ColourMap.read_sample_info(
-#    sample_indir=args.sample_dir, sample_data=args.sample_data
-# )
-
-# View the first 5 lines of the dataframe to check headers and data have read in properly
-# print("Sample data to plot:")
-# print(data.head())
-
-# Step 2: Plot data on colourmap
-
-
-# ColourMap.map_samples(
-# Import samples and plot
-# SamplesToMap
-# Variables: colour, size, shape, population (for legend)
-# Default: black, small, circles, one population
-# Print figure (default .png), optional pdf
 
 
 # def execute_main():
