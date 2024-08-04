@@ -3,7 +3,6 @@
 
 # import all dependencies
 import rasterio
-from rasterio import mask
 from rasterio.merge import merge
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -12,7 +11,6 @@ from shapely.geometry import Polygon
 from shapely.geometry import mapping
 import glob
 import numpy as np
-import shapefile
 import pandas as pd
 
 
@@ -144,6 +142,15 @@ class ImportMap:
                 [min_long, max_lat],
             ]
         )
+
+    # Helper function to create MAP_EXTENT variable
+    def define_map_extent(self, coords):
+        coords_tuple = tuple(np.array(coords).ravel())
+        min_lat = coords_tuple[0]
+        min_long = coords_tuple[1]
+        max_lat = coords_tuple[2]
+        max_long = coords_tuple[3]
+        return (min_long, max_long, min_lat, max_lat)
 
     # Function to write polygon to shapefile
     def write_bbox_to_shp(self, polygon, outdir):
