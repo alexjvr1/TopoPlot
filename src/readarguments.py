@@ -1,4 +1,4 @@
-# Default and user inputs for GeoPlot
+# Default and user inputs for TopoPlot
 
 # import dependencies
 import argparse
@@ -11,7 +11,8 @@ path_root = Path(__file__).parents[1]
 sys.path.append(str(path_root))
 
 
-# All functions related to importing the topographic map
+# All functions to read in user options and process user and default options \
+# with argparse()
 class ReadArguments:
     def __init__(self):
         self = self
@@ -199,7 +200,6 @@ class ReadArguments:
                 A value of 0 will make the hillshade completely transparent. Default: 0.5",
             metavar="[0.0-1.0]",
         )
-
         default_mode = str("./raster")
         parser.add_argument(
             "-sdir",
@@ -216,7 +216,7 @@ class ReadArguments:
             required=False,
             default=default_mode,
             help="User defined marker and colour choices are supplied in the data file for each sample. This is expected by default.\
-                If specified as 'False', all populations will be plotted with marker='o' (circle), and colour='k' (black). \
+                If specified as 'False', each population will be plotted with marker='o' (circle), and a randomly assigned colour. \
                 Default: 'True'",
         )
         args = parser.parse_args()
