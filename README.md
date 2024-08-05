@@ -9,7 +9,7 @@ TopoPlot is an easy to use tool to create topographic maps of any region of the 
 
 2. Bounds for the map: Either coordinates (best if you're mapping a specific area) or a shape file (best if you're mapping a country or state). See our suggestion [here](https://github.com/alexjvr1/TopoPlot/blob/main/README.md#shape-file-for-map-mask---mask-country)
 
-3. Sample data: A tab delimited file with the following columns with at least Population, Latitude, and Longitude as columns. Optionally, Colour and Marker can be provided to customise sample points. Column order does not matter. See our example [here]()
+3. Sample data: A tab delimited file with the following columns with at least Population, Lat, and Long as columns. Optionally, Colour and Marker can be provided to customise sample points. Column order does not matter.
 
 |Population|Lat|Long|Colour|Marker|
 |----------|--------|---------|------|------|
