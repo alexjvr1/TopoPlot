@@ -85,13 +85,13 @@ To supply a custom polygon, use the '--mask country' option and simply provide a
 
 ## Examples
 
-### Example 1: 
+## Example 1: 
 
 Create a map of the UK using the --country mask. Plot samples using the default colour gradient and markers. 
 
 
 
-### Example 2: 
+## Example 2: 
 
 Create a map of the UK using the --coordinates mask. Plot samples using the default colour gradient and markers
 
@@ -102,7 +102,8 @@ Create a map of a small part of the UK using a combination of --country and --co
 Plot samples using the default colour gradient and markers
 
 
-## Example 4
+## Example 4:
 
-Change the colourgradient of the map. Use custom marker colour and shape. 
+Change the colourgradient of the map. Use custom marker colour and shape. Add a plot header. 
+
 
