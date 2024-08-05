@@ -102,6 +102,12 @@ elif args.mask == "country" and bool(args.coordinates) == False:
         args.outdir,
     )
 
+    # create map_extent variable to be used in Part2
+    map_extent = ImportMap.define_map_extent_from_tif(
+        geotiff="output/FINAL.clipped.tif"
+    )
+    print("map extent is:", map_extent)
+
 # Option 3 (--coordinates):
 # Mask the map using the bounding box created by the coordinates only.
 elif args.mask == "coords" and bool(args.country) == False:
