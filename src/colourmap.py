@@ -112,33 +112,50 @@ class ColourMap:
                 # Plot legend in the upper right corner
                 ax.legend(loc="upper right")
             plt.title(maptitle)
-            plt.savefig("test.png")
+            output_path = str(str(outdir) + "/FinalMap")
+            plt.savefig(output_path + ".png")
+            plt.savefig(output_path + ".pdf")
             plt.show()
-        # If colour and marker is not assigned, plot in black and randomly assign marker shape
+        # If colour and marker is not assigned, plot circle and randomly assign marker colour
         else:
             # Read in data file containing Population, Lat, and Long
             path_to_data = str(str(sample_indir) + "/" + sample_data)
             data = pd.read_csv(path_to_data, delimiter="\t", header=0)
             # Get list of population names
-            pop = data.Population.unique()
-            # hex values to create a random colour for each population
-            hexadecimal_alphabets = "0123456789ABCDEF"
-            # generate a random hex colour for each population
-            color = [
-                "#" + "".join([random.choice(hexadecimal_alphabets) for j in range(6)])
-                for i in pop
+            pop = data["Population"].unique()
+
+            # Create a list of valid symbols from matplotlib
+            marker_symbols = [
+                ".",
+                "o",
+                "v",
+                "^",
+                "<",
+                ">",
+                "s",
+                "p",
+                "P",
+                "*",
+                "h",
+                "x",
+                "X",
+                "D",
+                "d",
             ]
-            # create a dictionary of population names and random colours
-            colour_dict = dict(zip(pop, color))
+            # generate a random marker for each population
+            marker = [random.choice(marker_symbols) for i in pop]
+            # create a dictionary of population names and random markers
+            marker_dict = dict(zip(pop, marker))
             # Group data by population
             for name, group in data.groupby("Population"):
                 group = group.copy()
+                # Assign marker by referring ot the marker dictionary
+                marker = marker_dict.get(name)
                 ax.scatter(
                     x=group["Long"],
                     y=group["Lat"],
-                    marker="o",
-                    # Assign colour by referring to colour dictionary
-                    color=group["Population"].map(colour_dict),
+                    color="k",
+                    marker=marker,
                     # assign label name for legend
                     label=name,
                     zorder=2,
@@ -146,8 +163,8 @@ class ColourMap:
                 # Plot legend in the upper right corner
                 ax.legend(loc="upper right")
             plt.title(maptitle)
-            plt.savefig("test.png")
+            output_path = str(str(outdir) + "/FinalMap")
+            plt.savefig(output_path + ".png")
+            plt.savefig(output_path + ".pdf")
             plt.show()
-        plt.savefig(output_path + ".png")
-        plt.savefig(output_path + ".pdf")
         return map
