@@ -12,6 +12,7 @@ from shapely.geometry import mapping
 import glob
 import numpy as np
 import pandas as pd
+from pyproj import CRS
 
 
 # All functions related to importing the topographic map
@@ -157,7 +158,7 @@ class ImportMap:
         outdir = str(outdir) + "/polygon.shp"
         gpd.GeoDataFrame(
             pd.DataFrame(["p1"], columns=["geom"]),
-            crs={"init": "epsg:4326"},
+            crs=CRS("epsg:4326"),
             geometry=[polygon],
         ).to_file(outdir)
 
@@ -172,6 +173,6 @@ class ImportMap:
         output_path = str(str(outdir) + "/FINAL.clipped.tif")
         with rasterio.open(output_path, "w", **out_meta) as dest:
             dest.write(out_image)
-        plt.imshow(out_image[0], cmap="Spectral")
+        # plt.imshow(out_image[0], cmap="Spectral")
         plt.savefig(output_path + ".png")
         return out_image, value_range
