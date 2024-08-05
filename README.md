@@ -19,7 +19,7 @@ Install TopoMap
 ```
 
 ### Topographic data
-TopoPlot requires elevation data in raster format for the area to be plotted. We use the Global Multi-resolution Terrain Elevation Data 2010 (GMTED2010) that contains elevation data for the globe collected from various sources at 7.5 arc-seconds resolution. More information on the dataset can be found [here](https://topotools.cr.usgs.gov/GMTED_viewer/gmted2010_fgdc_metadata.html)
+TopoPlot requires elevation data in raster format for the area to be plotted. We suggest you use the Global Multi-resolution Terrain Elevation Data 2010 (GMTED2010) that contains elevation data for the globe collected from various sources at 7.5 arc-seconds resolution. More information on the dataset can be found [here](https://topotools.cr.usgs.gov/GMTED_viewer/gmted2010_fgdc_metadata.html)
 
 The required grid square(s) can be downloaded from the USGS following [this link](https://topotools.cr.usgs.gov/gmted_viewer/viewer.htm). 
 
