@@ -5,7 +5,7 @@ TopoPlot is an easy to use tool to create topographic maps of any region of the 
 
 ## Requirements
 
-1. Topographic data. See our suggestion [here]() 
+1. Topographic data: A raster file containing elevational data for the region of interest. See our suggestion [here](https://github.com/alexjvr1/TopoPlot/blob/main/README.md#topographic-data) 
 
 2. Coordinates (best if you're mapping a specific area) or a shape file (best if you're mapping a country or state). See our suggestion [here]()
 
