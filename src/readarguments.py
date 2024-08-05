@@ -98,7 +98,9 @@ class ReadArguments:
             "--country",
             type=str,
             required=False,
-            help="Name of the country shape to be used. Required if --mask country is chosen.",
+            help="Name of the country shape to be used. Required if --mask country is chosen.\
+            If the Natural Earth Data shapefile is used (recommended), a list of available \
+            country names can be found in example/data. Like: 'United Kingdom'",
             metavar="COUNTRY",
         )
         parser.add_argument(
