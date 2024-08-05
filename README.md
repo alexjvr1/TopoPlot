@@ -35,7 +35,7 @@ The required grid square(s) can be downloaded from the USGS following [this link
 ### Shape file for map mask: '--mask country'
 To extract the part of the map that is of interest, TopoMap makes use either of a set of coordinates (see below), or a polygon in the shape of the country of interest. 
 
-Natural Earth Data provides one such source of shape files for countries. Different versions of these (varying by how borders are defined) can be downloaded [here](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/). Countries are coded with standard [ISO](https://www.iso.org/obp/ui/#search) and FIPS codes.
+Natural Earth Data provides one such source of shape files for countries. Different versions of these (varying by how borders are defined) can be downloaded [here](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/). If using this shapefile, country names should be provided in full (e.g. "United Kingdom"). A list of the available countries is provided with the shapefile in TopoMap/example_data.
 
 They can also be downloaded per country from the GADM [here](https://gadm.org/download_country.html), but these files are MUCH larger. 
 
