@@ -13,6 +13,7 @@ import glob
 import numpy as np
 import pandas as pd
 from pyproj import CRS
+from rasterio.warp import transform_bounds
 
 
 # All functions related to importing the topographic map
@@ -104,6 +105,18 @@ class ImportMap:
             value_range = np.amax(out_image) + abs(np.amin(out_image))
             return out_image, value_range, out_meta
 
+    # Function to find extent from an imported geotiff file
+    def define_map_extent_from_tif(self, geotiff):
+        with rasterio.open(geotiff) as rds:
+            # creates a variable with min long, min lat, max long, max lat
+            coords_tuple = transform_bounds(rds.crs, "epsg:4326", *rds.bounds)
+            print(coords_tuple)
+            min_long = coords_tuple[0]
+            min_lat = coords_tuple[1]
+            max_long = coords_tuple[2]
+            max_lat = coords_tuple[3]
+            return (min_long, max_long, min_lat, max_lat)
+
     # Mask map according to country shape
     # outdir is the directory where the input raster is saved after merge
     # by import_and_merge_raster_file
@@ -124,7 +137,7 @@ class ImportMap:
         output_path = str(str(outdir) + "/mosaic.masked.tif")
         with rasterio.open(output_path, "w", **out_meta) as dest:
             dest.write(out_image)
-        plt.imshow(out_image[0], cmap="Spectral")
+        # plt.imshow(out_image[0], cmap="Spectral")
         plt.savefig(output_path + ".png")
         return out_image, value_range
 
