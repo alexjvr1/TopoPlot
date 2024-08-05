@@ -1,7 +1,7 @@
 # TopoPlot
-Plot sample points on a topographical map. 
+Create beautiful topographic maps with of sample locations.
 
-TopoPlot plots sample locations on topographical maps. The default maps are in grey scale, or the map can be produced in a custom colour palette. Sample colour, shape, and size can be chosen by the user. 
+TopoPlot is an easy to use tool to create topographic maps of any region of the world using either country names, or specific coordinates. The map is coloured by elevation, and can be customised using any of the colourgradients available in matplotlib. Sample or population coordinates are plotted on top of the topographic map. These are plotted in black by default with a random marker shape assigned for each population, or they can be customised with a user provided input file. 
 
 ## Requirements
 
