@@ -7,10 +7,18 @@ TopoPlot is an easy to use tool to create topographic maps of any region of the 
 
 1. Topographic data: A raster file containing elevational data for the region of interest. See our suggestion [here](https://github.com/alexjvr1/TopoPlot/blob/main/README.md#topographic-data) 
 
-2. Bounds for the map: Either coordinates (best if you're mapping a specific area) or a shape file (best if you're mapping a country or state). See our suggestion [here]()
+2. Bounds for the map: Either coordinates (best if you're mapping a specific area) or a shape file (best if you're mapping a country or state). See our suggestion [here](https://github.com/alexjvr1/TopoPlot/blob/main/README.md#shape-file-for-map-mask---mask-country)
 
-3. A tab delimited file containing sample/population names, latitude, longitude, and (optional) colour, shape, and size of the points to be plotted. See our example [here]()
+3. Sample data: A tab delimited file with the following columns with at least Population, Latitude, and Longitude as columns. Optionally, Colour and Marker can be provided to customise sample points. Column order does not matter. See our example [here]()
 
+|Population|Lat|Long|Colour|Marker|
+|----------|--------|---------|------|------|
+|Pop1 |51.338404 |-0.12074935 |^ |goldenrod|
+|Pop1 |51.314844 |-0.1661964 |^ |goldenrod|
+|Pop2 |51.299128 |-0.029111665 |s |seagreen|
+|Pop2 |51.439448 |-0.45041888 |s |blue|
+|Pop3 |53.474438 |-0.98750698 |s |blue|
+|Pop3 |53.474438 |-0.98750698 |s |seagreen|
 
 ## Quick start
 
