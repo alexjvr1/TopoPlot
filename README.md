@@ -34,6 +34,20 @@ Install PyPI stable package:
 pip install topomap
 ```
 
+## Basic command
+
+```
+topomap --indir [directory containing raster and sample files] --sample_data [name of sample file] -m [mask: country or coordinates]
+
+#if -m country, then --country is a required argument:
+
+topomap --indir [directory containing raster and sample files] --sample_data [name of sample file] -m country --country [name of country to be plotted]
+```
+
+
+
+## Options 
+
 ### Topographic data
 TopoPlot requires elevation data in raster format for the area to be plotted. We suggest you use the Global Multi-resolution Terrain Elevation Data 2010 (GMTED2010) that contains elevation data for the globe collected from various sources at 7.5 arc-seconds resolution. More information on the dataset can be found [here](https://topotools.cr.usgs.gov/GMTED_viewer/gmted2010_fgdc_metadata.html)
 
