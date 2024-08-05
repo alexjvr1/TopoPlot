@@ -44,10 +44,20 @@ topomap --indir [directory containing raster and sample files] --sample_data [na
 topomap --indir [directory containing raster and sample files] --sample_data [name of sample file] -m country --country [name of country to be plotted]
 ```
 
-
-
 ## Options 
 
+
+
+## Sample points 
+
+Sample points can be customised using the columns "Colour" and "Marker" to specify marker colour and shape.
+
+Colour can be chosen from this [list](https://matplotlib.org/stable/gallery/color/named_colors.html)
+
+Marker shapes can be chosen from this [list](https://matplotlib.org/stable/api/markers_api.html#module-matplotlib.markers)
+
+
+## Required data
 ### Topographic data
 TopoPlot requires elevation data in raster format for the area to be plotted. We suggest you use the Global Multi-resolution Terrain Elevation Data 2010 (GMTED2010) that contains elevation data for the globe collected from various sources at 7.5 arc-seconds resolution. More information on the dataset can be found [here](https://topotools.cr.usgs.gov/GMTED_viewer/gmted2010_fgdc_metadata.html)
 
@@ -72,42 +82,27 @@ They can also be downloaded per country from the GADM [here](https://gadm.org/do
 To supply a custom polygon, use the '--mask country' option and simply provide a custom shape file.  
 
 
-### Coordinates for map mask: '--mask coords'
+
+## Examples
+
+### Example 1: 
+
+Create a map of the UK using the --country mask. Plot samples using the default colour gradient and markers. 
 
 
 
-### Options for hillshade aesthetics
+### Example 2: 
+
+Create a map of the UK using the --coordinates mask. Plot samples using the default colour gradient and markers
 
 
+## Example 3: 
 
-#### altitude
-
-
-#### azimuth
-
-
-# default: 
+Create a map of a small part of the UK using a combination of --country and --coordinates to mask the map. 
+Plot samples using the default colour gradient and markers
 
 
-### Sample data
+## Example 4
 
+Change the colourgradient of the map. Use custom marker colour and shape. 
 
-<<<<<<< HEAD
-### Options for plotting markers
-
-#### Shape
-
-A full list of the available markers can be found in the matplotlib documentation [here](https://matplotlib.org/1.4.1/api/markers_api.html). The most commonly used markers are: 
-
-#TODO add figure of markers
-
-
-#### Colour
-
-=======
-Coordinates
-
-Colour from the [available list](https://matplotlib.org/stable/gallery/color/named_colors.html)
-
-Marker shape from the [available list](https://matplotlib.org/stable/api/markers_api.html#module-matplotlib.markers)
->>>>>>> 21887a8f72d9cd17595923e0d1264abfaefc3c9d
