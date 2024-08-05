@@ -22,8 +22,16 @@ TopoPlot is an easy to use tool to create topographic maps of any region of the 
 
 ## Quick start
 
-Install TopoMap 
+Python3+ is required. 
+
+Install bioconda package: 
 ```
+conda install -c conda-forge -c bioconda topomap
+```
+
+Install PyPI stable package:
+```
+pip install topomap
 ```
 
 ### Topographic data
